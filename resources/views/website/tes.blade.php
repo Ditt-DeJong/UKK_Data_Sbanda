@@ -1,159 +1,118 @@
-@vite('resources/css/app.css')
-@vite('resources/js/app.js')
+@extends('layout.master')
 
-<body class="flex flex-col min-h-screen bg-gray-100">
-    <div class="container">
-        <div class="w-full py-8 px-8 bg-blue-600">
-            <!-- Card Container -->
-                <!-- Header Section -->
-                <div class="flex justify-between items-start mb-4">
-                    <div>
-                        <h1 class="text-white text-3xl lg:text-4xl font-bold mb-4">Pencatatan Data Siswa</h1>
-                        <p class="text-white text-opacity-90 text-lg">Mohon lengkapi data berikut untuk pencatatan sekolah</p>
-                    </div>
-                    <div class="">
-                        <svg class="w-24 h-24 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z"/>
-                        </svg>
-                    </div>
-                </div>
+@section('title', 'Kehadiran')
 
-                <!-- Form Section -->
-                <div class="bg-blue-400 bg-opacity-40 backdrop-blur-sm rounded-2xl p-6 lg:p-8">
-                    <h2 class="text-white text-3xl font-semibold mb-6">Data Siswa</h2>
+@section('content')
+  <div class="container mx-auto px-4 py-8 min-h-screen">
+      <div class="bg-blue-500 p-3 mb-8 text-lg rounded-lg shadow" role="alert">
+        <h4 class="font-bold text-white text-lg">Selamat Datang di Data Sbanda..!! 
+        </h4>
+        <span class="text-xl text-white opacity-90">
+            Anda Dapat Memantau Absensi Anda Disini
+        <span>
+      </div>
 
-                    <form action="" method="POST">
-                        @csrf
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Nama Lengkap -->
-                            <div>
-                                <label for="nama_lengkap" class="block text-white font-medium mb-2">
-                                    Nama Lengkap <span class="text-orange-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="nama_lengkap" 
-                                    name="nama_lengkap" 
-                                    placeholder="Masukkan nama lengkap siswa"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-                                    required
-                                >
-                            </div>
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+            <!-- Hari Hadir Card -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl hover:shadow-cyan-300 transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400"></div>
+                <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400 mb-3">20</div>
+                <div class="text-gray-600 font-semibold text-lg">Hari Hadir</div>
+                <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-sky-200 rounded-full opacity-20 group-hover:opacity-90 transition-opacity duration-300"></div>
+            </div>
 
-                            <!-- NIK -->
-                            <div>
-                                <label for="nik" class="block text-white font-medium mb-2">
-                                    NIK <span class="text-orange-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="nik" 
-                                    name="nik" 
-                                    placeholder="Masukkan NIK siswa (16 digit)"
-                                    maxlength="16"
-                                    minlength="16"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-                                    required
-                                >
-                            </div>
+            <!-- Hari Izin Card -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl hover:shadow-orange-300 transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-yellow-400"></div>
+                <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-yellow-400 mb-3">2</div>
+                <div class="text-gray-600 font-semibold text-lg">Hari Izin</div>
+                <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-orange-200 rounded-full opacity-20 group-hover:opacity-90 transition-opacity duration-300"></div>
+            </div>
 
-                            <!-- Tempat, Tanggal Lahir -->
-                            <div>
-                                <label for="tempat_tanggal_lahir" class="block text-white font-medium mb-2">
-                                    Tempat, Tanggal Lahir <span class="text-orange-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="tempat_tanggal_lahir" 
-                                    name="tempat_tanggal_lahir" 
-                                    placeholder="cth: Semarang, 4 Agustus 2009"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-                                    required
-                                >
-                            </div>
+            <!-- Persentase Kehadiran Card -->
+            <div class="bg-white rounded-2xl p-8 text-center shadow-xl hover:shadow-2xl hover:shadow-emerald-300 transform hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-green-400 to-blue-500"></div>
+                <div class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-3">90%</div>
+                <div class="text-gray-600 font-semibold text-lg">Persentase Kehadiran</div>
+                <div class="absolute -bottom-2 -right-2 w-20 h-20 bg-teal-200 rounded-full opacity-20 group-hover:opacity-90 transition-opacity duration-300"></div>
+            </div>
+        </div>
 
-                            <!-- Alamat Rumah -->
-                            <div>
-                                <label for="alamat" class="block text-white font-medium mb-2">
-                                    Alamat Rumah <span class="text-orange-500">*</span>
-                                </label>
-                                <input 
-                                    type="text" 
-                                    id="alamat" 
-                                    name="alamat" 
-                                    placeholder="Cantumkan nama jalan & nomor rumah"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
-                                    required
-                                >
-                            </div>
+        <!-- Riwayat Kehadiran Section -->
+        <div class="bg-white rounded-2xl p-6 lg:p-8 shadow-lg mb-8">
+            <!-- Section Header -->
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 pb-4 border-b-2 border-gray-100">
+                <h3 class="text-2xl lg:text-3xl font-bold text-gray-800 mb-4 lg:mb-0">Riwayat Kehadiran</h3>
+                <button class="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-6 py-2 !rounded-lg font-semibold hover:from-blue-600 hover:to-cyan-500 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                    <span>Filter</span>
+                </button>
+            </div>
 
-                            <!-- Jenis Kelamin -->
-                            <div>
-                                <label for="jenis_kelamin" class="block text-white font-medium mb-2">
-                                    Jenis Kelamin <span class="text-orange-500">*</span>
-                                </label>
-                                <select 
-                                    id="jenis_kelamin" 
-                                    name="jenis_kelamin"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
-                                    required
-                                >
-                                    <option value="">Laki-laki</option>
-                                    <option value="laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                </select>
-                            </div>
+            <!-- Subtitle -->
+            <div class="mb-6">
+                <span class="text-gray-600 font-semibold text-lg">5 Hari Terakhir</span>
+            </div>
 
-                            <!-- Agama -->
-                            <div>
-                                <label for="agama" class="block text-white font-medium mb-2">
-                                    Agama <span class="text-orange-500">*</span>
-                                </label>
-                                <select 
-                                    id="agama" 
-                                    name="agama"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
-                                    required
-                                >
-                                    <option value="">Islam</option>
-                                    <option value="islam">Islam</option>
-                                    <option value="kristen">Kristen</option>
-                                    <option value="katolik">Katolik</option>
-                                    <option value="hindu">Hindu</option>
-                                    <option value="buddha">Buddha</option>
-                                    <option value="konghucu">Konghucu</option>
-                                </select>
-                            </div>
-
-                            <!-- Kelas -->
-                            <div class="flex flex-col w-full">
-                                <label for="kelas" class="block text-white font-medium mb-2">
-                                    Kelas <span class="text-orange-500">*</span>
-                                </label>
-                                <select 
-                                    id="kelas" 
-                                    name="kelas"
-                                    class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
-                                    required
-                                >
-                                    <option value="">6</option>
-                                    <option value="">Hanya untuk kelas 6</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="flex justify-end mt-8">
-                            <button 
-                                type="submit"
-                                class="bg-gradient-to-r text-white from-blue-500 to-blue-700  hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-300 hover:text-blue-600 font-semibold px-8 py-3 !rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-                            >Selanjutnya
-                            </button>
-                        </div>
-                    </form>
-                </div>
+            <!-- Table Container -->
+            <div class="overflow-x-auto rounded-xl border border-gray-200">
+                <table class="w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="text-left py-4 px-6 font-bold text-gray-700 text-lg">Tanggal</th>
+                            <th class="text-left py-4 px-6 font-bold text-gray-700 text-lg">Status</th>
+                            <th class="text-left py-4 px-6 font-bold text-gray-700 text-lg">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-6 text-gray-700 font-medium">01-08-2025</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center  px-3 py-1 text-sm font-bold text-green-800 bg-green-100 rounded-lg">
+                                    HADIR
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">Tepat Waktu</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-6 text-gray-700 font-medium">01-08-2025</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center justify-center px-3 py-1 text-sm font-bold text-yellow-800 bg-yellow-100 rounded-lg">
+                                    SAKIT
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">Sakit Demam</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-6 text-gray-700 font-medium">01-08-2025</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center px-3 py-1 text-sm font-bold text-green-800 bg-green-100 rounded-lg">
+                                    HADIR
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">Tepat Waktu</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-6 text-gray-700 font-medium">01-08-2025</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center px-3 py-1 text-sm font-bold text-blue-800 bg-blue-100 rounded-lg">
+                                    IZIN
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">Absen Keluarga</td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition-colors duration-200">
+                            <td class="py-4 px-6 text-gray-700 font-medium">01-08-2025</td>
+                            <td class="py-4 px-6">
+                                <span class="inline-flex items-center px-3 py-1 text-sm font-bold text-green-800 bg-green-100 rounded-lg">
+                                    HADIR
+                                </span>
+                            </td>
+                            <td class="py-4 px-6 text-gray-600">Tepat Waktu</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-</body>
+@endsection

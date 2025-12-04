@@ -33,9 +33,9 @@
                                 </label>
                                 <input 
                                     type="text" 
-                                    id="nama_lengkap" 
-                                    name="nama_lengkap" 
-                                    placeholder="Masukkan nama lengkap siswa"
+                                    id="nama_wali" 
+                                    name="nama_wali" 
+                                    placeholder="Masukkan nama lengkap wali"
                                     class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
                                     required
                                 >
@@ -81,7 +81,7 @@
                                 <input 
                                     type="text" 
                                     id="nomor_telepon_wali" 
-                                    name="nomor_telepon_walii" 
+                                    name="nomor_telepon_wali" 
                                     placeholder="cth: 0858-5449-8289"
                                     class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200"
                                     required
@@ -100,12 +100,12 @@
                                     name="agama_wali"
                                     class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
                                     required>
-                                    <option value="islam">Islam</option>
-                                    <option value="kristen">Kristen</option>
-                                    <option value="katolik">Katolik</option>
-                                    <option value="hindu">Hindu</option>
-                                    <option value="buddha">Buddha</option>
-                                    <option value="konghucu">Konghucu</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Kristen">Kristen</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Buddha">Buddha</option>
+                                    <option value="Konghucu">Konghucu</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-3 top-9 flex items-center text-gray-500">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,14 +124,14 @@
                                     name="pekerjaan_wali"
                                     class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
                                     required>
-                                    <option value="pns">Pegawai Negri</option>
-                                    <option value="wiraswasta">Pegawai Swasta</option>
-                                    <option value="kehutanan">Kehutanan</option>
-                                    <option value="kesehatan">Kesehatan</option>
-                                    <option value="keamanan">Keamanan</option>
-                                    <option value="rumah_tangga">Mengurus Rumah Tangga (Ibu)</option>
-                                    <option value="lain">Yang Lainnya</option>
-                                    <option value="tidak_kerja">Tidak Berkerja</option>
+                                    <option value="Pegawai Negri">Pegawai Negri</option>
+                                    <option value="Pegawai Swasta">Pegawai Swasta</option>
+                                    <option value="Kehutanan">Kehutanan</option>
+                                    <option value="Kesehatan">Kesehatan</option>
+                                    <option value="Keamanan">Keamanan</option>
+                                    <option value="Mengurus Rumah Tangga">Mengurus Rumah Tangga (Ibu)</option>
+                                    <option value="Yang Lainnya">Yang Lainnya</option>
+                                    <option value="Tidak Bekerja">Tidak Bekerja</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-3 top-9 flex items-center text-gray-500">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,10 +150,10 @@
                                     name="peran_wali"
                                     class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-90 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 appearance-none cursor-pointer"
                                     required>
-                                    <option value="ayah">Ayah</option>
-                                    <option value="ibu">Ibu</option>
-                                    <option value="kakak">Kakak (bila yatim)</option>
-                                    <option value="paman_bibi">Paman atau Bibi (bila yatim)</option>
+                                    <option value="Ayah">Ayah</option>
+                                    <option value="Ibu">Ibu</option>
+                                    <option value="Kakak_yatim">Kakak (bila yatim)</option>
+                                    <option value="Paman_Bibi_yatim">Paman atau Bibi (bila yatim)</option>
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-3 top-9 flex items-center text-gray-500">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

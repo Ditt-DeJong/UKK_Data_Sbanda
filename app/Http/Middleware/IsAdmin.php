@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
+
+class IsAdmin
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        // Cek apakah admin sudah login menggunakan guard 'admin'
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('admin.login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        // Cek apakah user yang login adalah admin (pastikan property role ada)
+        $user = Auth::guard('admin')->user();
+        
+        if (!$user || $user->role !== 'admin') {
+            Auth::guard('admin')->logout();
+            return redirect()->route('admin.login')->with('error', 'Akses ditolak. Admin only.');
+        }
+
+        return $next($request);
+    }
+}

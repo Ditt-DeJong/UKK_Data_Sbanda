@@ -12,7 +12,7 @@
         
         {{-- Bagian Kiri: Form Login --}}
         <div class="p-8 flex flex-col justify-center py-2">
-            <h1 class="text-lg font-semibold pt-4 text-blue-600">Data Sbanda</h1>
+            <h1 class="text-xl font-semibold pt-4 text-blue-600">Data Sbanda</h1>
             <h2 class="text-2xl md:text-3xl font-bold mt-4 text-center">
                 Hi, Selamat Datang <br>
                 Kembali di <span class="text-blue-600">Data Sbanda</span>
@@ -54,20 +54,21 @@
                         @error('email')
                             <div class="text-red-600 mb-3 mt-2">{{ $message }}</div>
                         @enderror
+
+                    <div class="relative pt-1">
+                        <h3 class="text-gray-500">Catatan: harap ingat-ingat email dan password anda</h3>
+                    </div>
                 </div>
 
                 {{-- Ingat Saya --}}
-                <div class="flex items-center">
-                    <input type="checkbox" name="remember" id="remember" class="mr-2">
-                    <label for="remember">Ingat Saya</label>
-                </div>
+                
 
                 {{-- Tombol Login --}}
                 <button type="submit"
-                        class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                    <span class="justify-items-start">←</span>
-                    <span>Login</span>
-                    <span class="justify-items-end">→</span>
+                        class="w-full flex items-center justify-between bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    <span class="flex justify-items-start pb-2 pl-3 text-5xl">←</span>
+                    <span class="font-semibold text-xl">Login</span>
+                    <span class="flex justify-items-end pb-2 pr-3 text-5xl">→</span>
                 </button>
             </form>
 
@@ -83,14 +84,14 @@
         </div>
 
         {{-- Bagian Kanan: Ilustrasi --}}
-        <div class="bg-blue-600 bg-cover bg-center flex flex-col justify-center items-center text-white py-2 relative" 
-        style="background-image: url({{ asset("build/assets/image/pattern.png") }})">
-            <h2 class="text-xl md:text-2xl font-bold underline">Portal Orang Tua</h2>
+        <div class="bg-blue-600 flex flex-col justify-start items-center text-white pt-8 relative">
+            <h2 class="text-xl md:text-3xl font-bold underline">Portal Orang Tua</h2>
             <p class="mt-4 text-center italic text-lg">
                 “Bantu perkembangan anak anda secara optimal <br>
                 dengan memantau keaktifan anak!!”
             </p>
-            <img src="{{ asset('images/kids.png') }}" alt="Ilustrasi Anak" class="mt-6 w-48">
+            <div class="mt-6">
+                <img src="{{ asset('build/assets/image/anaksekolah.png') }}" alt="Ilustrasi Login" class="w-64 md:w-80 lg:w-96">
         </div>
     </div>
 </body>

@@ -7,18 +7,18 @@
     <title>Register Page</title>
     @vite(['resources/js/app.js', 'resources/js/toggle.js'])
 </head>
-<body class="bg-gradient-to-r from-blue-600 to-blue-200 py-4">
+<body class="bg-gradient-to-r from-blue-600 to-blue-200 py-2">
   <div class="flex items-center justify-center">
-        <div class="w-full max-w-5xl bg-white rounded-2xl shadow-lg grid grid-cols-1 my-12 md:grid-cols-2 gap-6 overflow-hidden">
+        <div class="w-full max-w-5xl bg-white rounded-2xl shadow-lg grid grid-cols-1 my-8 md:grid-cols-2 gap-6 overflow-hidden">
             
             {{-- Bagian Kiri: Form Login --}}
             <div class="p-8 flex flex-col justify-center py-2">
                 <h1 class="text-lg font-semibold pt-4 text-blue-600">Data Sbanda</h1>
                 <h2 class="text-2xl md:text-3xl font-bold mt-4 text-center">
-                    Selamat Datang di <span class="text-blue-600">Data Sbanda</span>, Silahkan Daftar Terlebih Dahulu
+                    Selamat Datang di <br><span class="text-blue-600">Data Sbanda</span>
                     {{-- Hi, Selamat Datang <br>--}}
                 </h2>
-                <p class="text-gray-500 mt-2 text-center">Silahkan daftarkan akun anda</p>
+                <p class="text-gray-500 mt-2 text-center">Silahkan isi data berikut ini terlebih dahulu</p>
 
                 <form action="{{ route('register') }}" method="POST" class="mt-6 space-y-4">
                     @csrf
@@ -58,15 +58,15 @@
 
                     {{-- Tombol Login --}}
                     <button type="submit"
-                            class="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
-                        <span class="justify-items-start">←</span>
-                        <span>Daftar</span>
-                        <span class="justify-items-end">→</span>
+                            class="w-full flex items-center justify-between bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        <span class="flex justify-items-start pb-1.5 pl-3 text-5xl">←</span>
+                        <span class="font-semibold text-xl">Daftar</span>
+                        <span class="flex justify-items-end pb-1.5 pr-3 text-5xl">→</span>
                     </button>
                 </form>
 
                 <p class="mt-4 text-sm">
-                    Memiliki Akun? 
+                     Sudah memiliki akun? 
                     <a href="{{ route('login') }}" class="font-semibold underline text-blue-500">Masuk Sekarang.</a>
                 </p>
 
