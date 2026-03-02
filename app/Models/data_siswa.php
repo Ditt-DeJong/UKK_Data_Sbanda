@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Siswa extends Model
+class Data_siswa extends Model
 {
     protected $table = 'data_siswa';
     
@@ -12,13 +12,21 @@ class Siswa extends Model
         'user_id',
         'nama_siswa',
         'nik_siswa',
+        'jenis_kelamin',
+        'umur',
+        'kelas',
+        'status',
         'tempat_tanggal_lahir',
         'alamat',
-        'jenis_kelamin',
         'agama',
-        'kelas',
+        'status_approval',
+        'alasan_penolakan',
+        'approved_at',
     ];
 
+    protected $casts = [
+        'approved_at' => 'datetime',
+    ];
     // Relasi ke User
     public function user()
     {

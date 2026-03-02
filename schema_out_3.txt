@@ -1,0 +1,16 @@
+TABLE: data_orang_tua
+id - Null: NO - Extra: auto_increment - Default: 
+user_id - Null: NO - Extra:  - Default: 
+siswa_id - Null: NO - Extra:  - Default: 
+Nama_Orang_Tua - Null: NO - Extra:  - Default: 
+Umur - Null: NO - Extra:  - Default: 
+alamat - Null: YES - Extra:  - Default: 
+nik_orang_tua - Null: YES - Extra:  - Default: 
+agama - Null: YES - Extra:  - Default: 
+pekerjaan - Null: YES - Extra:  - Default: 
+peran_wali - Null: YES - Extra:  - Default: 
+Nomor_telepon - Null: NO - Extra:  - Default: 
+Kode_Pos - Null: NO - Extra:  - Default: 
+created_at - Null: YES - Extra:  - Default: 
+updated_at - Null: YES - Extra:  - Default: 
+--------------------------

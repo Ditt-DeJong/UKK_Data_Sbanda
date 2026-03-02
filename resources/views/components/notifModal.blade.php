@@ -1,4 +1,5 @@
-<div id="notifModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[50]">
+@push('modals')
+<div id="notifModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[70]">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">
 
         <!-- Header -->
@@ -38,7 +39,7 @@
                                 <i class="fa-solid fa-user"></i>
                             </div>
                             <div>
-                                <p class="font-bold text-lg">{{ $data->nama_lengkap }}</p>
+                                <p class="font-bold text-lg">{{ $data->nama_siswa ?? '-' }}</p>
                                 <p class="text-gray-600 text-sm">Kelas {{ $data->kelas }}</p>
                             </div>
                         </div>
@@ -53,7 +54,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="font-semibold text-sm text-gray-500">NIK:</p>
-                                <p class="text-gray-800">{{ $data->nik }}</p>
+                                <p class="text-gray-800">{{ $data->nik_siswa ?? '-' }}</p>
                             </div>
                             <div>
                                 <p class="font-semibold text-sm text-gray-500">Jenis Kelamin:</p>
@@ -78,7 +79,11 @@
                             </div>
                             <div>
                                 <p class="font-semibold text-sm text-gray-500">Nama Orang Tua:</p>
-                                <p class="text-gray-800">{{ $data->user->name ?? '-' }}</p>
+                                <p class="text-gray-800">{{ $data->orangTua->nama_orang_tua ?? $data->user->name ?? '-' }}</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-sm text-gray-500">No. Telepon:</p>
+                                <p class="text-gray-800">{{ $data->orangTua->nomor_telepon ?? '-' }}</p>
                             </div>
                         </div>
                     </div>
@@ -91,7 +96,7 @@
                             </button>
                         </form>
                         
-                        <button onclick="openRejectModal({{ $data->id }}, '{{ $data->nama_lengkap }}')" class="bg-red-50 text-red-600 py-3 rounded-lg font-semibold border-2 border-red-300 hover:bg-red-100 transition-colors flex items-center justify-center gap-2">
+                        <button onclick="openRejectModal({{ $data->id }}, '{{ $data->nama_siswa ?? '' }}')" class="bg-red-50 text-red-600 py-3 rounded-lg font-semibold border-2 border-red-300 hover:bg-red-100 transition-colors flex items-center justify-center gap-2">
                             <i class="fa-solid fa-times"></i> Tolak
                         </button>
                     </div>
@@ -113,7 +118,7 @@
 </div>
 
 <!-- Modal Reject -->
-<div id="rejectModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[60]">
+<div id="rejectModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[80]">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
         <div class="p-6 border-b bg-red-50">
             <h3 class="text-lg font-semibold text-gray-800">Alasan Penolakan</h3>
@@ -143,18 +148,20 @@
     </div>
 </div>
 
+@endpush
+
 @push('scripts')
 <script>
-    // Close notification modal
-    const closeNotifBtn = document.getElementById("closeNotifModal");
-    const notifModal = document.getElementById("notifModal");
-    const overlay = document.getElementById("overlay");
+    // Close notification modal (wrapped in IIFE to avoid const conflicts)
+    (function() {
+        const closeNotifBtn = document.getElementById("closeNotifModal");
 
-    closeNotifBtn?.addEventListener("click", () => {
-        notifModal.classList.add("hidden");
-        overlay.classList.add("hidden");
-        document.body.classList.remove("overflow-hidden");
-    });
+        closeNotifBtn?.addEventListener("click", () => {
+            document.getElementById("notifModal")?.classList.add("hidden");
+            document.getElementById("overlay")?.classList.add("hidden");
+            document.body.classList.remove("overflow-hidden");
+        });
+    })();
 
     // Reject Modal Functions
     function openRejectModal(dataId, namaSiswa) {
@@ -167,21 +174,13 @@
         rejectDataId.value = dataId;
         rejectNamaSiswa.textContent = namaSiswa;
         
-        rejectModal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+        rejectModal?.classList.remove('hidden');
+        document.getElementById("overlay")?.classList.remove('hidden');
     }
 
     function closeRejectModal() {
-        const rejectModal = document.getElementById('rejectModal');
-        rejectModal.classList.add('hidden');
-        overlay.classList.add('hidden');
+        document.getElementById('rejectModal')?.classList.add('hidden');
+        document.getElementById("overlay")?.classList.add('hidden');
     }
-
-    // Close with ESC
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeRejectModal();
-        }
-    });
 </script>
 @endpush

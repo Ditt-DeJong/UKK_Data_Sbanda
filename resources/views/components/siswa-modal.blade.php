@@ -1,5 +1,6 @@
+@push('modals')
 <!-- MODAL DETAIL SISWA -->
-<div id="detailSiswaModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[50]">
+<div id="detailSiswaModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[70]">
     <div class="bg-white w-[90%] max-w-3xl rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">
 
         <!-- Header -->
@@ -128,6 +129,8 @@
 
     </div>
 </div>
+
+@endpush
 
 @push('scripts')
 <script>

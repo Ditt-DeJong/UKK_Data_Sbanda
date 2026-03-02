@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use App\Models\Lengkapi1;
-use App\Models\Lengkapi2;
+use App\Models\data_siswa;
+use App\Models\data_orang_tua;
 use Illuminate\Http\RedirectResponse;
 
 class UserAuthController extends Controller
@@ -68,6 +68,14 @@ class UserAuthController extends Controller
 
              $user = Auth::user();
 
+            // Jika user adalah admin, logout dari guard web dan login via guard admin
+            if ($user->role === 'admin') {
+                Auth::guard('web')->logout();
+                Auth::guard('admin')->login($user, $request->boolean('remember'));
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard');
+            }
+
             // Jika belum melengkapi data, arahkan ke form kelengkapan
             if (!$user->is_completed) {
                 return redirect()->route('lengkapi1');
@@ -95,10 +103,10 @@ class UserAuthController extends Controller
             'kelas' => 'required|string',
         ]);
 
-        Lengkapi1::create([
+        data_siswa::create([
             'user_id' => Auth::id(),
-            'nama_lengkap' => $request->nama_lengkap,
-            'nik' => $request->nik,
+            'nama_siswa' => $request->nama_lengkap,
+            'nik_siswa' => $request->nik,
             'tempat_tanggal_lahir' => $request->tempat_tanggal_lahir,
             'alamat' => $request->alamat,
             'jenis_kelamin' => $request->jenis_kelamin,
@@ -121,14 +129,17 @@ class UserAuthController extends Controller
             'peran_wali' => 'required|string|max:50',
         ]);
 
-        Lengkapi2::create([
+        $siswa_id = data_siswa::where('user_id', Auth::id())->first()->id;
+
+        data_orang_tua::create([
             'user_id' => Auth::id(),
-            'nama_wali' => $request->nama_wali,
-            'nik_wali' => $request->nik_wali,
-            'alamat_wali' => $request->alamat_wali,
-            'nomor_telepon_wali' => $request->nomor_telepon_wali,
-            'agama_wali' => $request->agama_wali,
-            'pekerjaan_wali' => $request->pekerjaan_wali,
+            'siswa_id' => $siswa_id,
+            'nama_orang_tua' => $request->nama_wali,
+            'nik_orang_tua' => $request->nik_wali,
+            'alamat_orang_tua' => $request->alamat_wali,
+            'nomor_telepon' => $request->nomor_telepon_wali,
+            'agama_orang_tua' => $request->agama_wali,
+            'pekerjaan' => $request->pekerjaan_wali,
             'peran_wali' => $request->peran_wali,
         ]);
 
@@ -136,7 +147,7 @@ class UserAuthController extends Controller
         $user->is_completed = true;
         $user->save();
 
-        return redirect('/')->with('success', 'Data berhasil dilengkapi!');
+        return redirect()->route('waiting.room')->with('success', 'Data berhasil dilengkapi!');
     }
 
     // Logout

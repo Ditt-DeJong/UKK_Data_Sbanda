@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Lengkapi1;
-use App\Models\Lengkapi2;
 use App\Models\Kehadiran;
+use App\Models\data_siswa;
+use App\Models\data_orang_tua;
 
 class User extends Authenticatable
 {
@@ -35,14 +35,14 @@ class User extends Authenticatable
         ];
     }
 
-    public function lengkapi1()
+    public function dataSiswa()
     {
-        return $this->hasOne(Lengkapi1::class, 'user_id');
+        return $this->hasOne(data_siswa::class, 'user_id');
     }
 
-    public function lengkapi2()
+    public function dataOrangTua()
     {
-        return $this->hasOne(Lengkapi2::class);
+        return $this->hasOne(data_orang_tua::class, 'user_id');
     }
 
     // Relasi ke Kehadiran

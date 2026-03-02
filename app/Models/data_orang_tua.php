@@ -13,9 +13,9 @@ class data_orang_tua extends Model
         'siswa_id',
         'nama_orang_tua',
         'nik_orang_tua',
-        'alamat',
+        'alamat_orang_tua',
         'nomor_telepon',
-        'agama',
+        'agama_orang_tua',
         'pekerjaan',
         'peran_wali',
     ];
@@ -29,6 +29,6 @@ class data_orang_tua extends Model
     // Relasi ke Siswa
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Data_siswa::class, 'siswa_id');
     }
 }

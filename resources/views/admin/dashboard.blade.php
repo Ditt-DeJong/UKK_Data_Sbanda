@@ -1,367 +1,199 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Portal Orang Tua</title>
+<x-mainLayout 
+    title="Dashboard" 
+    :active="'dashboard'"
+    pageTitle="Dashboard"
+    pageSubtitle="Kelola sistem absensi dan pendataan siswa"
+    :notifCount="$notifCount">
 
-    <!-- Font Awesome 6.5 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<!-- Notification Modal -->
+<x-notifModal :dataSiswaPending="$dataSiswaPending" />
 
-    <!-- Tailwind -->
-    @vite('resources/css/app.css')
-</head>
-
-<body class="bg-gray-50 font-sans antialiased">
-
-<!-- OVERLAY dengan opacity yang lebih ringan -->
-<div id="overlay" class="hidden fixed inset-0 bg-black opacity-60 z-[40] transition-opacity duration-300"></div>
-
-<!-- MODAL NOTIFIKASI -->
-<div id="notifModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 z-[50]">
-    <div class="bg-white w-[90%] max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">
-
-        <!-- Header -->
-        <div class="p-6 border-b bg-blue-50">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800">Notifikasi Persetujuan</h2>
-                    <p class="text-sm text-gray-600">Kelola persetujuan data siswa dan surat ijin</p>
-                </div>
-                <button id="closeModal" class="text-gray-500 hover:text-gray-700 text-2xl transition-colors">
-                    &times;
-                </button>
+<!-- STATISTIK -->
+<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Total Siswa -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.1s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-users text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Total Siswa Terdaftar</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">{{ $totalSiswa }}</h3>
             </div>
         </div>
-
-        <!-- Tabs -->
-        <div class="flex border-b">
-            <button class="flex-1 py-3 text-center text-gray-600 hover:bg-gray-100 transition-colors">
-                <i class="fa-solid fa-user-plus mr-2"></i> Data Siswa Baru
-            </button>
-
-            <button class="flex-1 py-3 text-center text-blue-600 border-b-4 border-blue-600 bg-blue-50 relative">
-                <i class="fa-solid fa-file-lines mr-2"></i> Surat Ijin
-                <span class="absolute top-3 right-5 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">3</span>
-            </button>
-        </div>
-
-        <!-- Isi Konten -->
-        <div class="p-6 max-h-[60vh] overflow-y-auto">
-
-            <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
-
-                <div class="flex justify-between">
-                    <div class="flex gap-3">
-                        <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 text-xl flex-shrink-0">
-                            <i class="fa-solid fa-file"></i>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg">Budi Setiawan</p>
-                            <p class="text-gray-600 text-sm">Kelas 7B</p>
-                        </div>
-                    </div>
-
-                    <p class="text-gray-500 text-sm flex items-center">
-                        <i class="fa-regular fa-clock mr-1"></i> 1 jam lalu
-                    </p>
-                </div>
-
-                <div class="mt-4 text-gray-700 space-y-3">
-                    <p><span class="font-semibold">Orang Tua:</span><br> Pak Hadi</p>
-
-                    <p><span class="font-semibold">Alasan:</span><br>
-                        Sakit demam dan batuk
-                    </p>
-
-                    <div class="flex justify-between">
-                        <p><span class="font-semibold">Tanggal Mulai:</span><br> 20 Nov 2025</p>
-                        <p><span class="font-semibold">Tanggal Selesai:</span><br> 22 Nov 2025</p>
-                    </div>
-                </div>
-
-                <div class="mt-6 grid grid-cols-2 gap-4">
-                    <button class="bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors">
-                        <i class="fa-solid fa-check-circle"></i> Setujui Ijin
-                    </button>
-                    <button class="bg-red-100 text-red-600 py-3 rounded-lg font-semibold border border-red-400 hover:bg-red-200 transition-colors">
-                        <i class="fa-solid fa-times-circle"></i> Tolak Ijin
-                    </button>
-                </div>
-
-            </div>
-
+        <div class="mt-4 flex items-center gap-2 text-sm">
+            <span class="flex items-center gap-1 text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">
+                <i class="fa-solid fa-clock text-xs"></i> {{ $dataPending }} pending
+            </span>
+            <span class="text-gray-400">menunggu verifikasi</span>
         </div>
     </div>
-</div>
 
-    <div class="flex min-h-screen">
-
-        <!-- SIDEBAR -->
-        <aside class="fixed top-0 left-0 h-screen w-64 bg-white border-r border-gray-300 shadow-sm flex flex-col justify-between">
-
-            <!-- Logo -->
-            <div class="flex items-center gap-3 px-6 py-5 border-b border-gray-300">
-                <div class="bg-blue-600 text-white p-2 rounded-lg">
-                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold text-gray-800">Admin Panel</h1>
-                    <p class="text-sm text-gray-500 -mt-1">Portal Orang Tua</p>
-                </div>
+    <!-- Izin Pending -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.15s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300 animate-pulse-glow">
+                <i class="fa-solid fa-file-circle-exclamation text-white text-2xl"></i>
             </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 py-4 space-y-1">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center px-6 py-3
-                {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition' }}">
-                    <i class="fa-solid fa-house mr-3 w-5"></i> Dashboard
-                </a>
-                <a href="{{ route('admin.datasiswa') }}" class="flex items-center px-6 py-3
-                {{ request()->routeIs('admin.datasiswa') ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition' }}">
-                    <i class="fa-solid fa-users mr-3 w-5"></i> Data Siswa
-                </a>
-                <a href="{{ route('admin.kehadiransiswa') }}" class="flex items-center px-6 py-3
-                 {{ request()->routeIs('admin.kehadiransiswa') ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition' }}">
-                    <i class="fa-solid fa-calendar-check mr-3 w-5"></i> Kehadiran
-                </a>
-                <a href="{{ route('admin.kelola_izin') }}" class="flex items-center px-6 py-3
-                {{ request()->routeIs('admin.kelola_izin') ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-600 font-semibold' : 'text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition' }}">
-                    <i class="fa-solid fa-clipboard-check mr-3 w-5"></i> Persetujuan Izin
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition">
-                    <i class="fa-solid fa-calendar-days mr-3 w-5"></i> Jadwal Kelas
-                </a>
-            </nav>
-
-            <!-- Logout -->
-            <form action="{{ route('admin.logout') }}" method="POST" class="border-t border-gray-300">
-                @csrf
-                <button type="submit" class="w-full flex items-center justify-center gap-2 px-6 py-4 text-red-500 hover:text-white hover:bg-red-500 font-semibold transition">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
-            </form>
-        </aside>
-
-        <!-- MAIN CONTENT -->
-        <main class="flex-1 ml-64">
-
-            <!-- HEADER (sticky) -->
-            <header class="sticky top-0 z-[30] flex justify-between items-center bg-white px-6 py-4 border-b border-gray-300 shadow-sm">
-
-                <div>
-                    <h2 class="text-2xl font-bold text-blue-600">Dashboard</h2>
-                    <p class="text-sm text-gray-500">Kelola sistem absensi dan pendataan siswa</p>
-                </div>
-
-                <!-- NOTIF + PROFILE -->
-                <div class="flex items-center gap-6 relative">
-
-                    <!-- NOTIF ICON -->
-                    <div class="relative cursor-pointer group" id="notifButton">
-                        <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shadow-sm hover:bg-blue-200 transition-colors">
-                            <i class="fa-solid fa-bell text-lg"></i>
-                        </div>
-
-                        <!-- BADGE -->
-                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
-                    </div>
-
-                    <!-- PROFILE -->
-                    <div class="flex items-center gap-3">
-                        <div class="text-right">
-                            <p class="font-semibold text-gray-800">Admin</p>
-                            <p class="text-xs text-gray-500">Administrator</p>
-                        </div>
-
-                        <div class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-white font-semibold shadow-sm">
-                            A
-                        </div>
-                    </div>
-
-                </div>
-            </header>
-
-            <!-- STATISTIK -->
-            <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div class="bg-white border-l-4 border-blue-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-blue-100 p-3 rounded-lg">
-                            <i class="fa-solid fa-users text-blue-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Total Siswa Terdaftar</p>
-                            <h3 class="text-2xl font-bold text-gray-800">36</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border-l-4 border-yellow-500 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-yellow-100 p-3 rounded-lg">
-                            <i class="fa-solid fa-file-circle-exclamation text-yellow-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Izin Pending</p>
-                            <h3 class="text-2xl font-bold text-gray-800">4</h3>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white border-l-4 border-green-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-                    <div class="flex items-center gap-4">
-                        <div class="bg-green-100 p-3 rounded-lg">
-                            <i class="fa-solid fa-circle-check text-green-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Data Terverifikasi</p>
-                            <h3 class="text-2xl font-bold text-gray-800">32</h3>
-                        </div>
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- CONTENT SECTION -->
-            <section class="px-6 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-                <!-- DAFTAR SISWA -->
-                <div class="bg-white border border-gray-300 rounded-xl shadow-sm p-6 hover:shadow-md transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Daftar Siswa Kelas 6</h3>
-                            <p class="text-sm text-gray-400">Per 21 Oktober 2025</p>
-                        </div>
-                        <button class="bg-blue-600 hover:bg-blue-700 font-semibold text-white text-sm px-4 py-2 rounded-lg shadow-sm transition">
-                            Tambah
-                        </button>
-                    </div>
-
-                    <div class="space-y-3">
-                        @for ($i = 1; $i <= 5; $i++)
-                        <div class="flex items-center justify-between border border-gray-300 p-4 rounded-xl hover:bg-blue-50 hover:border-blue-400 transition group">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold">
-                                    {{ substr('Ahmad Fandi Nurkholis', 0, 1) }}
-                                </div>
-                                <div>
-                                    <p class="font-medium text-gray-800 group-hover:text-blue-700 transition">Ahmad Fandi Nurkholis</p>
-                                    <p class="text-sm text-gray-500">NIS: 230{{ $i }} / Kelas 6A</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-xs px-3 py-1 rounded-lg bg-green-100 text-green-600 group-hover:bg-green-500 group-hover:text-white font-semibold transition">Hadir</span>
-                                <button class="text-blue-500 hover:text-blue-700 transition">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        @endfor
-                    </div>
-
-                    <div class="mt-5 text-center">
-                        <button class="text-blue-600 hover:text-blue-800 font-medium text-sm transition">Lihat Semua Siswa →</button>
-                    </div>
-                </div>
-
-                <!-- IZIN TERBARU -->
-                <div class="bg-white border border-gray-300 rounded-xl shadow-sm p-6 hover:shadow-md transition">
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Izin Terbaru</h3>
-                            <p class="text-sm text-gray-400">Per 21 Oktober 2025</p>
-                        </div>
-                        <button class="bg-green-600 hover:bg-green-700 font-semibold text-white text-sm px-4 py-2 rounded-lg shadow-sm transition">
-                            Tambah
-                        </button>
-                    </div>
-
-                    <div class="space-y-4">
-
-                        <div class="flex justify-between items-center bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200 hover:shadow-md transition">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-blue-600 text-white p-3 rounded-lg shadow-sm">
-                                    <i class="fa-solid fa-person-walking text-lg"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">Faiz Suki Ambalabu</p>
-                                    <p class="text-sm text-gray-500">Sakit — 06 Okt 2025</p>
-                                </div>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold shadow-sm">Pending</span>
-                        </div>
-
-                        <div class="flex justify-between items-center bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-xl border border-green-200 hover:shadow-md transition">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-green-600 text-white p-3 rounded-lg shadow-sm">
-                                    <i class="fa-solid fa-person-walking-arrow-right text-lg"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">Ahmad Fandi Nurkholis</p>
-                                    <p class="text-sm text-gray-500">Acara Keluarga — 05 Okt 2025</p>
-                                </div>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold shadow-sm">Disetujui</span>
-                        </div>
-
-                        <div class="flex justify-between items-center bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-xl border border-red-200 hover:shadow-md transition">
-                            <div class="flex items-center gap-3">
-                                <div class="bg-red-600 text-white p-3 rounded-lg shadow-sm">
-                                    <i class="fa-solid fa-user-clock text-lg"></i>
-                                </div>
-                                <div>
-                                    <p class="font-semibold text-gray-800">Naila Putri</p>
-                                    <p class="text-sm text-gray-500">Izin Pribadi — 03 Okt 2025</p>
-                                </div>
-                            </div>
-                            <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold shadow-sm">Ditolak</span>
-                        </div>
-
-                    </div>
-
-                    <div class="mt-5 text-center">
-                        <button class="text-green-600 hover:text-green-800 font-medium text-sm transition">
-                            Lihat Semua Izin →
-                        </button>
-                    </div>
-                </div>
-
-            </section>
-
-        </main>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Izin Pending</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">{{ $izins->where('status', 'pending')->count() }}</h3>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 text-sm">
+            <span class="text-amber-600">Perlu persetujuan segera</span>
+        </div>
     </div>
 
-<script>
-    const openBtn = document.getElementById("notifButton");
-    const modal = document.getElementById("notifModal");
-    const closeBtn = document.getElementById("closeModal");
-    const overlay = document.getElementById("overlay");
+    <!-- Data Terverifikasi -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.2s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-circle-check text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Data Terverifikasi</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500">{{ $dataVerified }}</h3>
+            </div>
+        </div>
+        <div class="mt-4 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full" style="width: {{ $totalSiswa > 0 ? round(($dataVerified / $totalSiswa) * 100) : 0 }}%"></div>
+        </div>
+    </div>
+</section>
 
-    // Buka modal
-    openBtn?.addEventListener("click", () => {
-        modal.classList.remove("hidden");
-        overlay.classList.remove("hidden");
-        document.body.classList.add("overflow-hidden");
-    });
+<!-- CONTENT SECTION -->
+<section class="px-6 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-    // Tutup modal
-    function closeModal() {
-        modal.classList.add("hidden");
-        overlay.classList.add("hidden");
-        document.body.classList.remove("overflow-hidden");
-    }
+    <!-- DAFTAR SISWA -->
+    <div class="card-futuristic overflow-hidden animate-slide-up" style="animation-delay: 0.25s">
+        <div class="p-6 border-b border-gray-200/60 flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <div class="w-2 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+                    Daftar Siswa Terbaru
+                </h3>
+                <p class="text-sm text-gray-400 ml-4">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            </div>
+            <a href="{{ route('admin.datasiswa') }}" class="btn-futuristic py-2.5 px-5 text-sm">
+                <i class="fa-solid fa-list mr-1"></i> Kelola
+            </a>
+        </div>
 
-    closeBtn.addEventListener("click", closeModal);
-    overlay.addEventListener("click", closeModal);
+        <div class="p-6 space-y-3">
+            @forelse($siswaList as $siswa)
+            <div class="flex items-center justify-between p-4 rounded-xl border border-gray-200/60 hover:bg-blue-50/50 hover:border-blue-300 transition-all duration-200 group cursor-pointer">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 text-white flex items-center justify-center font-bold shadow-md group-hover:scale-105 transition-transform">
+                        {{ strtoupper(substr($siswa->nama_siswa ?? $siswa->user->name ?? '?', 0, 1)) }}
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800 group-hover:text-blue-700 transition">{{ $siswa->nama_siswa ?? $siswa->user->name ?? '-' }}</p>
+                        <p class="text-sm text-gray-500">NIK: {{ $siswa->nik_siswa ?? '-' }} / Kelas {{ $siswa->kelas ?? '-' }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    @if($siswa->status_approval === 'approved')
+                    <span class="text-xs px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-700 font-semibold flex items-center gap-1">
+                        <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                        Terverifikasi
+                    </span>
+                    @elseif($siswa->status_approval === 'pending')
+                    <span class="text-xs px-3 py-1.5 rounded-lg bg-amber-100 text-amber-700 font-semibold flex items-center gap-1">
+                        <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                        Pending
+                    </span>
+                    @else
+                    <span class="text-xs px-3 py-1.5 rounded-lg bg-red-100 text-red-700 font-semibold flex items-center gap-1">
+                        <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                        Ditolak
+                    </span>
+                    @endif
+                </div>
+            </div>
+            @empty
+            <div class="text-center py-8 text-gray-400">
+                <i class="fa-solid fa-users text-3xl mb-2"></i>
+                <p>Belum ada data siswa</p>
+            </div>
+            @endforelse
+        </div>
 
-    // Tutup dengan tombol ESC
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-            closeModal();
-        }
-    });
-</script>
+        <div class="p-4 border-t border-gray-200/60 text-center bg-gray-50/50">
+            <a href="{{ route('admin.datasiswa') }}" class="text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center gap-2 transition group">
+                Lihat Semua Siswa 
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
 
-</body>
-</html>
+    <!-- IZIN TERBARU -->
+    <div class="card-futuristic overflow-hidden animate-slide-up" style="animation-delay: 0.3s">
+        <div class="p-6 border-b border-gray-200/60 flex justify-between items-center">
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <div class="w-2 h-6 bg-gradient-to-b from-emerald-500 to-emerald-600 rounded-full"></div>
+                    Izin Terbaru
+                </h3>
+                <p class="text-sm text-gray-400 ml-4">{{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            </div>
+            <a href="{{ route('admin.kelola_izin') }}" class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2.5 px-5 rounded-xl text-sm font-semibold shadow-lg shadow-emerald-500/30 hover:shadow-xl transition-all duration-300">
+                <i class="fa-solid fa-plus mr-1"></i> Tambah
+            </a>
+        </div>
+
+        <div class="p-6 space-y-4">
+            @forelse($izins->take(5) as $izin)
+            <div class="flex justify-between items-center p-4 rounded-xl 
+                {{ $izin->status == 'pending' ? 'bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60' : 
+                   ($izin->status == 'approved' ? 'bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200/60' : 
+                   'bg-gradient-to-r from-red-50 to-rose-50 border border-red-200/60') }} 
+                hover:shadow-md transition-all duration-200 group cursor-pointer">
+                
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 
+                        {{ $izin->status == 'pending' ? 'bg-gradient-to-br from-amber-500 to-orange-500' : 
+                           ($izin->status == 'approved' ? 'bg-gradient-to-br from-emerald-500 to-green-500' : 
+                           'bg-gradient-to-br from-red-500 to-rose-500') }} 
+                        text-white rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-person-walking"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-800">{{ $izin->nama_siswa }}</p>
+                        <p class="text-sm text-gray-500">{{ $izin->alasan }} — {{ \Carbon\Carbon::parse($izin->tanggal_izin)->format('d M Y') }}</p>
+                    </div>
+                </div>
+                
+                @if($izin->status == 'pending')
+                    <span class="px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold flex items-center gap-1.5">
+                        <span class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></span>
+                        Pending
+                    </span>
+                @elseif($izin->status == 'approved')
+                    <span class="px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-check text-xs"></i>
+                        Disetujui
+                    </span>
+                @else
+                    <span class="px-3 py-1.5 rounded-full bg-red-100 text-red-700 text-xs font-semibold flex items-center gap-1.5">
+                        <i class="fa-solid fa-xmark text-xs"></i>
+                        Ditolak
+                    </span>
+                @endif
+            </div>
+            @empty
+            <div class="p-4 text-center text-gray-500">Belum ada pengajuan izin terbaru.</div>
+            @endforelse
+        </div>
+
+        <div class="p-4 border-t border-gray-200/60 text-center bg-gray-50/50">
+            <a href="{{ route('admin.kelola_izin') }}" class="text-emerald-600 hover:text-emerald-800 font-medium text-sm inline-flex items-center gap-2 transition group">
+                Lihat Semua Izin
+                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
+
+</section>
+
+</x-mainLayout>

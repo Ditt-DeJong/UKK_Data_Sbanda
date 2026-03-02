@@ -18,10 +18,11 @@ class Izins extends Model
         'tanggal_izin',
         'alasan',
         'keterangan',
+        'status',
     ];
 
     public function siswa()
     {
-        return $this->belongsTo(Lengkapi1::class, 'siswa_id');
+        return $this->belongsTo(Data_siswa::class, 'siswa_id');
     }
 }

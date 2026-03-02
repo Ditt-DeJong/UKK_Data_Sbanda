@@ -1,0 +1,18 @@
+TABLE: data_siswa
+id - Null: NO - Extra: auto_increment - Default: 
+user_id - Null: NO - Extra:  - Default: 
+nama_siswa - Null: YES - Extra:  - Default: 
+umur - Null: YES - Extra:  - Default: 
+tempat_tanggal_lahir - Null: YES - Extra:  - Default: 
+agama - Null: YES - Extra:  - Default: 
+alamat - Null: YES - Extra:  - Default: 
+jenis_kelamin - Null: YES - Extra:  - Default: 
+kelas - Null: YES - Extra:  - Default: 
+status_approval - Null: NO - Extra:  - Default: pending
+alasan_penolakan - Null: YES - Extra:  - Default: 
+approved_at - Null: YES - Extra:  - Default: 
+status - Null: NO - Extra:  - Default: aktif
+nik_siswa - Null: YES - Extra:  - Default: 
+created_at - Null: YES - Extra:  - Default: 
+updated_at - Null: YES - Extra:  - Default: 
+--------------------------

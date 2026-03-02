@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Kehadiran;
+use App\Models\Izins;
 use Carbon\Carbon;
 
 class MainController extends Controller
@@ -17,6 +19,30 @@ class MainController extends Controller
     public function ajukanizin()
     {
         return view('website.ajukanizin');
+    }
+
+    public function submitIzin(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'nama_siswa' => 'required|string|max:255',
+            'tanggal_izin' => 'required|date',
+            'alasan' => 'required|string',
+            'keterangan' => 'nullable|string|max:250',
+        ]);
+
+        // Simpan data izin ke database
+        Izins::create([
+            'user_id' => Auth::id(),
+            'siswa_id' => Auth::user()->dataSiswa->id,
+            'nama_siswa' => $request->nama_siswa,
+            'tanggal_izin' => $request->tanggal_izin,
+            'alasan' => $request->alasan,
+            'keterangan' => $request->keterangan,
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('ajukanizin')->with('success', 'Permohonan izin berhasil dikirim!');
     }
 
     public function kehadiran()

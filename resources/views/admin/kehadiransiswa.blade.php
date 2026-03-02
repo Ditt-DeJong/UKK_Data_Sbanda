@@ -5,209 +5,237 @@
     pageSubtitle="Kelola absensi dan rekap kehadiran siswa"
     :notifCount="3">
 
-    <!-- Notification Modal Component -->
+<!-- Notification Modal Component -->
 <x-notifModal />
-
-<!-- Detail Izin Modal Component -->
 <x-ijinModal />
-
-<!-- Detail Data Siswa Component -->
 <x-siswa-modal />
-
-<!-- Detail Data Kehadiran Component -->
 <x-kehadiran-modal />
 
-    <!-- STATISTIK CARDS -->
-    <section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- STATISTIK CARDS -->
+<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Total Siswa -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.1s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-users text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Total Siswa</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">36</h3>
+            </div>
+        </div>
+    </div>
 
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-l-4 border-blue-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-2">
-                <div class="bg-blue-200 p-3 rounded-lg">
-                    <i class="fa-solid fa-users text-blue-600 text-xl"></i>
+    <!-- Izin -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.15s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-file-lines text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Izin</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">4</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sakit -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.2s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-notes-medical text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Sakit</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-500">2</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alpha -->
+    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.25s">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-gray-500 to-slate-600 rounded-2xl flex items-center justify-center shadow-lg shadow-gray-500/30 group-hover:scale-110 transition-transform duration-300">
+                <i class="fa-solid fa-circle-xmark text-white text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-500 mb-1">Alpha</p>
+                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-slate-500">0</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FILTER & TABLE SECTION -->
+<section class="px-6 pb-10">
+    <div class="card-futuristic overflow-hidden animate-slide-up" style="animation-delay: 0.3s">
+
+        <!-- Header dengan Filter -->
+        <div class="p-6 border-b border-gray-200/60">
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6">
+                <div>
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <div class="w-2 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
+                        Daftar Kehadiran Hari Ini
+                    </h3>
+                    <p class="text-sm text-gray-500 ml-4">Senin, 24 November 2025</p>
+                </div>
+                
+                <!-- Tombol Export & Rekap -->
+                <div class="flex gap-3">
+                    <button onclick="openRekapKehadiran()" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/30 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> Rekap
+                    </button>
+                    <button onclick="exportKehadiran()" class="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center gap-2">
+                        <i class="fa-solid fa-file-excel"></i> Export
+                    </button>
                 </div>
             </div>
-            <p class="text-sm font-medium text-blue-700 mb-1">Total Siswa</p>
-            <h3 class="text-3xl font-bold text-blue-600">36</h3>
-        </div>
 
-        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 border-l-4 border-yellow-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-2">
-                <div class="bg-yellow-200 p-3 rounded-lg">
-                    <i class="fa-solid fa-file-lines text-yellow-600 text-xl"></i>
-                </div>
-            </div>
-            <p class="text-sm font-medium text-yellow-700 mb-1">Izin</p>
-            <h3 class="text-3xl font-bold text-yellow-600">4</h3>
-        </div>
-
-        <div class="bg-gradient-to-br from-red-50 to-red-100 border-l-4 border-red-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-2">
-                <div class="bg-red-200 p-3 rounded-lg">
-                    <i class="fa-solid fa-notes-medical text-red-600 text-xl"></i>
-                </div>
-            </div>
-            <p class="text-sm font-medium text-red-700 mb-1">Sakit</p>
-            <h3 class="text-3xl font-bold text-red-600">2</h3>
-        </div>
-
-        <div class="bg-gradient-to-br from-gray-50 to-gray-100 border-l-4 border-gray-600 rounded-xl shadow-sm p-5 hover:shadow-md transition">
-            <div class="flex items-center justify-between mb-2">
-                <div class="bg-gray-200 p-3 rounded-lg">
-                    <i class="fa-solid fa-circle-xmark text-gray-600 text-xl"></i>
-                </div>
-            </div>
-            <p class="text-sm font-medium text-gray-700 mb-1">Alpha</p>
-            <h3 class="text-3xl font-bold text-gray-600">0</h3>
-        </div>
-
-    </section>
-
-    <!-- FILTER & TABLE SECTION -->
-    <section class="px-6 pb-10">
-
-        <div class="bg-white border border-gray-300 rounded-xl shadow-sm">
-
-            <!-- Header dengan Filter -->
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-4">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-800">Daftar Kehadiran Hari Ini</h3>
-                        <p class="text-sm text-gray-500">Senin, 24 November 2025</p>
-                    </div>
-                    
-                    <!-- Tombol Export & Rekap -->
-                    <div class="flex gap-2">
-                        <button onclick="openRekapKehadiran()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie"></i> Rekap Kehadiran
-                        </button>
-                        <button onclick="exportKehadiran()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition flex items-center gap-2">
-                            <i class="fa-solid fa-file-excel"></i> Export Excel
-                        </button>
-                    </div>
+            <!-- Filter Section -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal</label>
+                    <input type="date" value="2025-11-24" class="input-futuristic w-full">
                 </div>
 
-                <!-- Filter Section -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <!-- Tanggal -->
-                    <div>
-                        <label class="text-sm font-medium text-gray-700 mb-2 block">Tanggal</label>
-                        <input 
-                            type="date" 
-                            value="2025-11-24"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
-                    </div>
-
-                    <!-- Status Kehadiran -->
-                    <div>
-                        <label class="text-sm font-medium text-gray-700 mb-2 block">Status Kehadiran</label>
-                        <select class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                <div>
+                    <label class="text-sm font-semibold text-gray-700 mb-2 block">Status</label>
+                    <div class="relative">
+                        <select class="input-futuristic w-full appearance-none pr-12">
                             <option value="">Semua Status</option>
-                            <option value="izin">Izin</option>
-                            <option value="sakit">Sakit</option>
-                            <option value="alpha">Alpha</option>
+                            <option value="izin">📋 Izin</option>
+                            <option value="sakit">🏥 Sakit</option>
+                            <option value="alpha">❌ Alpha</option>
                         </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
                     </div>
+                </div>
 
-                    <!-- Search -->
-                    <div>
-                        <label class="text-sm font-medium text-gray-700 mb-2 block">Cari Siswa</label>
-                        <div class="relative">
-                            <input 
-                                type="text" 
-                                id="searchKehadiran"
-                                placeholder="Nama atau NIS..."
-                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
-                            <i class="fa-solid fa-search absolute left-3 top-3 text-gray-400"></i>
+                <div>
+                    <label class="text-sm font-semibold text-gray-700 mb-2 block">Cari Siswa</label>
+                    <div class="relative">
+                        <input type="text" id="searchKehadiran" placeholder="Nama atau NIS..." class="input-futuristic w-full pl-12">
+                        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fa-solid fa-search"></i>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Table Kehadiran -->
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">No</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">NIS</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Nama Siswa</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Kelas</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Waktu Absen</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Status</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Keterangan</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        
-                        <!-- Row 1 - Hadir -->
-                        @foreach ($kehadiran as $index => $row)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">{{ $index + 1 }}</td>
-                                <td class="px-6 py-4">{{ $row->siswa->nis }}</td>
-                                <td class="px-6 py-4">{{ $row->siswa->nama }}</td>
-                                <td class="px-6 py-4">{{ $row->siswa->kelas }}</td>
-                                <td class="px-6 py-4">
-                                    {{ $row->waktu_absen ? date('H:i', strtotime($row->waktu_absen)) . ' WIB' : '-' }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    @include('admin.kehadiran.status-badge', ['status' => $row->status])
-                                </td>
-                                <td class="px-6 py-4">{{ $row->keterangan }}</td>
-                                <td class="px-6 py-4">
-                                    <button onclick="openDetailKehadiran({{ json_encode($row) }})"
-                                        class="text-blue-600 hover:text-blue-800">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Pagination -->
-            <div class="p-6 border-t border-gray-200 flex items-center justify-between">
-                <p class="text-sm text-gray-600">Menampilkan 1-5 dari 36 siswa</p>
-                
-                <div class="flex items-center gap-2">
-                    <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm">
-                        <i class="fa-solid fa-chevron-left"></i>
-                    </button>
-                    <button class="px-3 py-2 bg-blue-600 text-white rounded-lg font-semibold text-sm">1</button>
-                    <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm">2</button>
-                    <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm">3</button>
-                    <button class="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-sm">
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </button>
-                </div>
-            </div>
-
         </div>
 
-    </section>
+        <!-- Table Kehadiran -->
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gradient-to-r from-gray-50 to-gray-100/80">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">NIS</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Siswa</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Kelas</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Waktu Absen</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Keterangan</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @foreach ($kehadiran as $index => $row)
+                    <tr class="hover:bg-blue-50/50 transition-colors duration-200 group">
+                        <td class="px-6 py-4 font-medium text-gray-600">{{ $index + 1 }}</td>
+                        <td class="px-6 py-4">
+                            <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{{ $row->siswa->nis }}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-md group-hover:scale-105 transition-transform">
+                                    {{ strtoupper(substr($row->siswa->nama, 0, 1)) }}
+                                </div>
+                                <span class="font-semibold text-gray-800">{{ $row->siswa->nama }}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
+                                {{ $row->siswa->kelas }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($row->waktu_absen)
+                            <span class="text-gray-700 font-medium">{{ date('H:i', strtotime($row->waktu_absen)) }} WIB</span>
+                            @else
+                            <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($row->status == 'hadir')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
+                                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Hadir
+                            </span>
+                            @elseif($row->status == 'izin')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
+                                <span class="w-2 h-2 bg-amber-500 rounded-full"></span> Izin
+                            </span>
+                            @elseif($row->status == 'sakit')
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">
+                                <span class="w-2 h-2 bg-red-500 rounded-full"></span> Sakit
+                            </span>
+                            @else
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-600">
+                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Alpha
+                            </span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 max-w-xs truncate">{{ $row->keterangan ?? '-' }}</td>
+                        <td class="px-6 py-4">
+                            <button onclick="openDetailKehadiran({{ json_encode($row) }})" 
+                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="p-6 border-t border-gray-200/60 flex items-center justify-between bg-gray-50/50">
+            <p class="text-sm text-gray-600">Menampilkan 1-5 dari 36 siswa</p>
+            
+            <div class="flex items-center gap-2">
+                <button class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-gray-100 transition text-gray-600">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/30">1</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-gray-100 transition text-gray-600">2</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-gray-100 transition text-gray-600">3</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl hover:bg-gray-100 transition text-gray-600">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+</section>
 
 </x-mainLayout>
 
 @push('scripts')
 <script>
-    // Open Detail Kehadiran Modal
     function openDetailKehadiran(data) {
         console.log('Detail kehadiran:', data);
-        // Akan menggunakan modal component
     }
 
-    // Open Rekap Kehadiran
     function openRekapKehadiran() {
         alert('Fitur rekap kehadiran akan segera hadir!');
     }
 
-    // Export to Excel
     function exportKehadiran() {
         alert('Data kehadiran akan di-export ke Excel!');
     }
 
-    // Search functionality
     document.getElementById('searchKehadiran')?.addEventListener('input', function(e) {
         const searchValue = e.target.value.toLowerCase();
         const rows = document.querySelectorAll('tbody tr');
