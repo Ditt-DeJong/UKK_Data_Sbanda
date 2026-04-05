@@ -3,7 +3,7 @@
     :active="'kelola-izin'"
     pageTitle="Persetujuan Ijin"
     pageSubtitle="Kelola permohonan izin siswa"
-    :notifCount="3">
+    :notifCount="$izins->where('status', 'pending')->count()">
 
 <!-- Modal Components -->
 <x-notifModal />
@@ -84,18 +84,18 @@
             </div>
 
             <!-- Filter Tabs -->
-            <div class="flex gap-2 flex-wrap">
-                <button class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 transition-all duration-300">
+            <div class="flex gap-2 flex-wrap" id="filterTabs">
+                <button onclick="filterIzin('')" data-filter="" class="filter-tab px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 transition-all duration-300">
+                    <i class="fa-solid fa-list mr-2"></i> Semua
+                </button>
+                <button onclick="filterIzin('pending')" data-filter="pending" class="filter-tab px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-amber-100 hover:text-amber-700 font-semibold text-sm transition-all duration-300">
                     <i class="fa-solid fa-clock mr-2"></i> Pending
                 </button>
-                <button class="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:text-emerald-700 font-semibold text-sm transition-all duration-300">
+                <button onclick="filterIzin('approved')" data-filter="approved" class="filter-tab px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-emerald-100 hover:text-emerald-700 font-semibold text-sm transition-all duration-300">
                     <i class="fa-solid fa-check mr-2"></i> Disetujui
                 </button>
-                <button class="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-700 font-semibold text-sm transition-all duration-300">
+                <button onclick="filterIzin('rejected')" data-filter="rejected" class="filter-tab px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-red-100 hover:text-red-700 font-semibold text-sm transition-all duration-300">
                     <i class="fa-solid fa-xmark mr-2"></i> Ditolak
-                </button>
-                <button class="px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 font-semibold text-sm transition-all duration-300">
-                    <i class="fa-solid fa-list mr-2"></i> Semua
                 </button>
             </div>
         </div>
@@ -110,13 +110,14 @@
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Orang Tua</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Alasan</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tanggal</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Lampiran</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @forelse($izins as $izin)
-                    <tr class="hover:bg-gray-50/50 transition-colors duration-200 group">
+                    <tr class="hover:bg-gray-50/50 transition-colors duration-200 group izin-row" data-status="{{ $izin->status }}">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-md group-hover:scale-105 transition-transform">
@@ -131,6 +132,15 @@
                         <td class="px-6 py-4 text-gray-600">{{ $izin->siswa->orangTua->nama_orang_tua ?? '-' }}</td>
                         <td class="px-6 py-4 text-gray-600">{{ $izin->alasan }}</td>
                         <td class="px-6 py-4 text-gray-600">{{ \Carbon\Carbon::parse($izin->tanggal_izin)->format('Y-m-d') }}</td>
+                        <td class="px-6 py-4">
+                            @if($izin->lampiran)
+                            <button onclick="openLampiranPopup('{{ asset('storage/' . $izin->lampiran) }}', '{{ $izin->nama_siswa }}')" class="text-blue-600 hover:text-blue-800 flex items-center gap-1.5 font-medium text-sm cursor-pointer">
+                                <i class="fa-solid fa-paperclip"></i> Lihat
+                            </button>
+                            @else
+                            <span class="text-gray-400">-</span>
+                            @endif
+                        </td>
                         <td class="px-6 py-4">
                             @if($izin->status == 'pending')
                             <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
@@ -152,6 +162,7 @@
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-2">
                                 <button onclick="openDetailModal({
+                                    id: '{{ $izin->id }}',
                                     nama: '{{ $izin->nama_siswa }}',
                                     kelas: '{{ $izin->siswa->kelas ?? '-' }}',
                                     ortu: '{{ $izin->siswa->orangTua->nama_orang_tua ?? '-' }}',
@@ -160,7 +171,8 @@
                                     selesai: '{{ $izin->tanggal_izin }}',
                                     diajukan: '{{ $izin->created_at->format('Y-m-d H:i') }}',
                                     status: '{{ ucfirst($izin->status) }}',
-                                    keterangan: '{{ $izin->keterangan }}'
+                                    keterangan: '{{ $izin->keterangan }}',
+                                    lampiran: '{{ $izin->lampiran ? asset('storage/' . $izin->lampiran) : '' }}'
                                 })" class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
@@ -192,4 +204,95 @@
         </div>
     </div>
 </section>
+
+@push('modals')
+{{-- Lampiran Preview Modal --}}
+<div id="lampiranModal" class="hidden fixed inset-0 z-[90] flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeLampiranPopup()"></div>
+    <div class="relative bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[85vh] overflow-hidden animate-scale-in z-10">
+        {{-- Header --}}
+        <div class="flex items-center justify-between p-5 border-b bg-gradient-to-r from-blue-50 to-blue-100">
+            <div>
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-paperclip text-blue-600"></i>
+                    Lampiran Izin
+                </h3>
+                <p id="lampiranNama" class="text-sm text-gray-500 mt-0.5"></p>
+            </div>
+            <button onclick="closeLampiranPopup()" class="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 hover:bg-red-100 text-gray-500 hover:text-red-600 transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+        {{-- Content --}}
+        <div class="p-6 flex items-center justify-center overflow-auto" style="max-height: calc(85vh - 80px)">
+            <img id="lampiranImage" src="" alt="Lampiran" class="hidden max-w-full max-h-[65vh] rounded-xl shadow-lg object-contain" />
+            <iframe id="lampiranPdf" src="" class="hidden w-full rounded-xl border" style="height: 65vh"></iframe>
+        </div>
+    </div>
+</div>
+@endpush
+
+@push('scripts')
+<script>
+function openLampiranPopup(url, nama) {
+    const modal = document.getElementById('lampiranModal');
+    const imgEl = document.getElementById('lampiranImage');
+    const pdfEl = document.getElementById('lampiranPdf');
+    document.getElementById('lampiranNama').textContent = nama;
+
+    const isPdf = url.toLowerCase().endsWith('.pdf');
+
+    if (isPdf) {
+        imgEl.classList.add('hidden');
+        pdfEl.classList.remove('hidden');
+        pdfEl.src = url;
+    } else {
+        pdfEl.classList.add('hidden');
+        imgEl.classList.remove('hidden');
+        imgEl.src = url;
+    }
+
+    modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+}
+
+function closeLampiranPopup() {
+    const modal = document.getElementById('lampiranModal');
+    modal.classList.add('hidden');
+    document.getElementById('lampiranImage').src = '';
+    document.getElementById('lampiranPdf').src = '';
+    document.body.classList.remove('overflow-hidden');
+}
+
+// ========= FILTER TABS =========
+function filterIzin(status) {
+    const rows = document.querySelectorAll('.izin-row');
+    const tabs = document.querySelectorAll('.filter-tab');
+    
+    // Update tab styles
+    tabs.forEach(tab => {
+        if (tab.dataset.filter === status) {
+            tab.className = 'filter-tab px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold text-sm shadow-lg shadow-blue-500/30 transition-all duration-300';
+        } else {
+            tab.className = 'filter-tab px-5 py-2.5 rounded-xl bg-gray-100 text-gray-600 hover:bg-gray-200 font-semibold text-sm transition-all duration-300';
+        }
+    });
+    
+    // Filter rows
+    rows.forEach(row => {
+        if (!status || row.dataset.status === status) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// Close with Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLampiranPopup();
+});
+</script>
+@endpush
+
 </x-mainLayout>

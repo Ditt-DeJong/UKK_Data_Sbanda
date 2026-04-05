@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use App\Models\User;
 use App\Models\Kehadiran;
+use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class GenerateKehadiranHarian extends Command
 {
@@ -25,13 +25,14 @@ class GenerateKehadiranHarian extends Command
     public function handle()
     {
         // Tentukan tanggal (gunakan parameter atau hari ini)
-        $tanggal = $this->option('date') 
-            ? Carbon::parse($this->option('date')) 
+        $tanggal = $this->option('date')
+            ? Carbon::parse($this->option('date'))
             : Carbon::today();
 
         // Hanya buat untuk hari kerja (Senin-Jumat)
         if ($tanggal->isWeekend()) {
             $this->info('Hari ini weekend, tidak ada kehadiran yang dibuat.');
+
             return 0;
         }
 
@@ -44,15 +45,15 @@ class GenerateKehadiranHarian extends Command
         foreach ($users as $user) {
             // Cek apakah sudah ada record untuk tanggal ini
             $exists = Kehadiran::where('user_id', $user->id)
-                              ->where('tanggal', $tanggal->format('Y-m-d'))
-                              ->exists();
+                ->where('tanggal', $tanggal->format('Y-m-d'))
+                ->exists();
 
-            if (!$exists) {
+            if (! $exists) {
                 Kehadiran::create([
                     'user_id' => $user->id,
                     'tanggal' => $tanggal->format('Y-m-d'),
                     'status' => 'HADIR',
-                    'keterangan' => 'Tepat Waktu'
+                    'keterangan' => 'Tepat Waktu',
                 ]);
                 $created++;
                 $this->info("✓ Created untuk user: {$user->name}");
@@ -64,7 +65,7 @@ class GenerateKehadiranHarian extends Command
         $this->info("\n==========================================");
         $this->info("Kehadiran berhasil dibuat untuk tanggal: {$tanggal->format('d-m-Y')}");
         $this->info("Created: {$created} | Skipped: {$skipped}");
-        $this->info("==========================================");
+        $this->info('==========================================');
 
         return 0;
     }

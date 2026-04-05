@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ class Kehadiran extends Model
         'user_id',
         'tanggal',
         'status',
-        'keterangan'
+        'keterangan',
     ];
 
     // Cast tanggal ke Carbon date
@@ -24,6 +25,11 @@ class Kehadiran extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
+    public function siswa()
+    {
+        return $this->belongsTo(\App\Models\DataSiswa::class, 'user_id', 'user_id');
+    }
+
     // Scope untuk filter berdasarkan user
     public function scopeForUser($query, $userId)
     {
@@ -34,6 +40,6 @@ class Kehadiran extends Model
     public function scopeInMonth($query, $year, $month)
     {
         return $query->whereYear('tanggal', $year)
-                    ->whereMonth('tanggal', $month);
+            ->whereMonth('tanggal', $month);
     }
 }

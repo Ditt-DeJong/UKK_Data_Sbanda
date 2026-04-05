@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Data_siswa extends Model
+class DataSiswa extends Model
 {
     protected $table = 'data_siswa';
-    
+
     protected $fillable = [
         'user_id',
         'nama_siswa',
@@ -27,6 +27,7 @@ class Data_siswa extends Model
     protected $casts = [
         'approved_at' => 'datetime',
     ];
+
     // Relasi ke User
     public function user()
     {
@@ -36,6 +37,6 @@ class Data_siswa extends Model
     // Relasi ke Orang Tua
     public function orangTua()
     {
-        return $this->hasOne(data_orang_tua::class, 'siswa_id');
+        return $this->hasOne(DataOrangTua::class, 'siswa_id');
     }
 }

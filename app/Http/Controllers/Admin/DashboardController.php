@@ -25,18 +25,21 @@ class DashboardController extends Controller
     public function kelolaIzin()
     {
         $admin = Auth::guard('admin')->user();
+
         return view('admin.kelola_izin');
     }
 
     public function datasiswa()
     {
         $admin = Auth::guard('admin')->user();
+
         return view('admin.datasiswa');
     }
 
     public function kehadiransiswa()
     {
         $admin = Auth::guard('admin')->user();
+
         return view('admin.kehadiransiswa');
     }
 }

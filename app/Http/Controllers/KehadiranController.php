@@ -10,9 +10,9 @@ class KehadiranController extends Controller
     public function index()
     {
         $data = Kehadiran::where('user_id', Auth::id())
-                         ->orderBy('tanggal', 'desc')
-                         ->take(5)
-                         ->get();
+            ->orderBy('tanggal', 'desc')
+            ->take(5)
+            ->get();
 
         return view('website.kehadiran', compact('data'));
     }

@@ -3,7 +3,7 @@
     :active="'data-siswa'"
     pageTitle="Data Siswa"
     pageSubtitle="Kelola data siswa dan informasi akademik"
-    :notifCount="3">
+    :notifCount="$dataSiswaPending->count()">
 
 <!-- Notification Modal -->
 <x-notifModal :dataSiswaPending="$dataSiswaPending" />
@@ -122,7 +122,10 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100">
                     @foreach($siswaList as $s)
-                    <tr class="hover:bg-blue-50/50 transition-colors duration-200 group">
+                    <tr class="hover:bg-blue-50/50 transition-colors duration-200 group siswa-row" 
+                        data-nama="{{ strtolower($s->nama_siswa ?? $s->user->name ?? '') }}"
+                        data-nis="{{ strtolower($s->nik_siswa ?? '') }}"
+                        data-status="{{ ucfirst($s->status ?? 'nonaktif') }}">
                         <td class="px-6 py-4">
                             <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{{ $s->nik_siswa }}</span>
                         </td>
@@ -285,7 +288,7 @@ function openTambahSiswaModal() {
 
 function openEditSiswaModal(data) {
     document.getElementById('modalTitle').innerText = 'Edit Siswa';
-    document.getElementById('formSiswa').action = `/admin/datasiswa/${data.id}`;
+    document.getElementById('formSiswa').action = `/admin/datasiswa/update/${data.id}`;
     document.getElementById('methodField').value = 'PUT';
 
     document.getElementById('nik_siswa').value = data.nik_siswa;
@@ -307,6 +310,27 @@ function showModal() {
 function closeModal() {
     document.getElementById('modalSiswa').classList.add('hidden');
 }
+
+// ========= SEARCH & STATUS FILTER =========
+function filterTable() {
+    const searchVal = document.getElementById('searchInput').value.toLowerCase();
+    const statusVal = document.getElementById('filterStatus').value;
+    const rows = document.querySelectorAll('.siswa-row');
+
+    rows.forEach(row => {
+        const nama = row.dataset.nama || '';
+        const nis = row.dataset.nis || '';
+        const rowStatus = row.dataset.status || '';
+
+        const matchSearch = nama.includes(searchVal) || nis.includes(searchVal);
+        const matchStatus = !statusVal || rowStatus === statusVal;
+
+        row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+    });
+}
+
+document.getElementById('searchInput')?.addEventListener('input', filterTable);
+document.getElementById('filterStatus')?.addEventListener('change', filterTable);
 </script>
 @endpush
 

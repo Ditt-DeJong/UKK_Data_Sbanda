@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class data_orang_tua extends Model
+class DataOrangTua extends Model
 {
     protected $table = 'data_orang_tua';
-    
+
     protected $fillable = [
         'user_id',
         'siswa_id',
@@ -29,6 +29,6 @@ class data_orang_tua extends Model
     // Relasi ke Siswa
     public function siswa()
     {
-        return $this->belongsTo(Data_siswa::class, 'siswa_id');
+        return $this->belongsTo(DataSiswa::class, 'siswa_id');
     }
 }

@@ -7,10 +7,12 @@
     @vite('resources/js/app.js')
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Lengkapi Data Orang Tua - Data Sbanda</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
     <style>
-      body { font-family: 'Inter', sans-serif; }
+      body { font-family: 'Poppins', sans-serif; }
+      h1, h2, h3, h4, .btn-futuristic { font-family: 'Outfit', sans-serif; }
     </style>
 </head>
 <body class="min-h-screen bg-gradient-animated relative">

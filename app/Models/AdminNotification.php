@@ -14,7 +14,6 @@ class AdminNotification extends Model
     ];
 
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
     ];
 }
-

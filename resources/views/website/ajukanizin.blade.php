@@ -16,6 +16,17 @@
         <span class="text-emerald-800 font-medium">{{ session('success') }}</span>
       </div>
     @endif
+
+    @if (session('error'))
+      <div class="card-futuristic p-4 mb-6 border-l-4 border-red-500 flex items-center gap-3 animate-slide-up bg-red-50/50">
+        <div class="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <span class="text-red-800 font-medium">{{ session('error') }}</span>
+      </div>
+    @endif
     
     {{-- Header Section --}}
     <div class="relative overflow-hidden card-futuristic p-6 mb-8 animate-fade-in">
@@ -52,7 +63,7 @@
 
     {{-- Form Section --}}
     <div class="card-futuristic p-8 animate-slide-up" style="animation-delay: 0.1s">
-      <form action="{{ route('izin.submit') }}" method="POST" class="space-y-6">
+      <form action="{{ route('izin.submit') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         
         {{-- Nama Siswa --}}
@@ -69,8 +80,9 @@
             type="text" 
             id="nama_siswa" 
             name="nama_siswa"
-            class="input-futuristic w-full"
-            placeholder="Masukkan nama siswa..."
+            value="{{ Auth::user()->dataSiswa->nama_siswa ?? Auth::user()->name }}"
+            class="input-futuristic w-full bg-gray-50 cursor-not-allowed"
+            readonly
             required
           >
         </div>
@@ -89,7 +101,9 @@
             type="date" 
             id="tanggal_izin" 
             name="tanggal_izin"
-            class="input-futuristic w-full"
+            value="{{ date('Y-m-d') }}"
+            class="input-futuristic w-full bg-gray-50 cursor-not-allowed"
+            readonly
             required
           >
         </div>
@@ -113,7 +127,7 @@
             >
               <option value="">Pilih Alasan</option>
               <option value="S (Sakit)">🏥 S (Sakit)</option>
-              <option value="I (Ijin)">📝 I (Ijin)</option>
+              <option value="I (Izin)">📝 I (Izin)</option>
               <option value="A (Alfa)">⚠️ A (Alfa)</option>
               <option value="Lainnya">📋 Lainnya</option>
             </select>
@@ -146,6 +160,26 @@
           <p class="text-xs text-gray-400 mt-2 text-right">Maksimal 250 karakter</p>
         </div>
 
+        {{-- Lampiran (Opsional) --}}
+        <div class="animate-fade-in" style="animation-delay: 0.32s">
+            <label for="lampiran" class="flex items-center gap-2 text-gray-700 font-semibold mb-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.414a4 4 0 00-5.656-5.656l-6.415 6.414a6 6 0 108.486 8.486L20.5 13"></path>
+                    </svg>
+                </div>
+                Lampiran (Opsional)
+            </label>
+            <input 
+                type="file" 
+                id="lampiran" 
+                name="lampiran"
+                class="input-futuristic w-full file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                accept="image/*,.pdf"
+            >
+            <p class="text-xs text-gray-400 mt-2">Format: JPG, PNG, PDF (Maks. 2MB)</p>
+        </div>
+
         {{-- Submit Button --}}
         <div class="pt-4 animate-fade-in" style="animation-delay: 0.35s">
           <button 
@@ -159,6 +193,73 @@
           </button>
         </div>
       </form>
+    </div>
+
+    {{-- Riwayat Section --}}
+    <div class="card-futuristic p-8 mt-8 animate-slide-up" style="animation-delay: 0.2s">
+        <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-history text-white text-sm"></i>
+            </div>
+            Riwayat Pengajuan
+        </h3>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-100">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Tanggal</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Alasan</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Status</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Keterangan Admin</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @forelse($riwayatIzin as $izin)
+                    <tr class="hover:bg-gray-50/50 transition-all group">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-700">
+                            {{ \Carbon\Carbon::parse($izin->tanggal_izin)->format('d M Y') }}
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-600">
+                            {{ $izin->alasan }}
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($izin->status === 'pending')
+                                <span class="badge-amber">Menunggu</span>
+                            @elseif($izin->status === 'approved')
+                                <span class="badge-emerald">Disetujui</span>
+                            @else
+                                <span class="badge-red">Ditolak</span>
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-500 italic">
+                            {{ $izin->alasan_penolakan ?? '-' }}
+                        </td>
+                        <td class="px-6 py-4">
+                            @if($izin->status === 'pending')
+                            <form action="{{ route('izin.cancel', $izin->id) }}" method="POST" onsubmit="return confirm('Batalkan pengajuan ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 font-semibold text-sm transition">
+                                    <i class="fa-solid fa-trash mr-1"></i> Batal
+                                </button>
+                            </form>
+                            @else
+                                <span class="text-gray-300">-</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-gray-400">
+                            Belum ada riwayat pengajuan izin
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
   </div>
 @endsection

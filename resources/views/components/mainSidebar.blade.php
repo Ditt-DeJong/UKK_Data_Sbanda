@@ -72,6 +72,34 @@
             <span class="font-medium">Persetujuan Izin</span>
         </a>
         
+        <a href="{{ route('admin.pengumuman') }}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group
+           {{ request()->routeIs('admin.pengumuman') 
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' 
+                : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600' }}">
+            <div class="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300
+                {{ request()->routeIs('admin.pengumuman') 
+                    ? 'bg-white/20' 
+                    : 'bg-indigo-100 group-hover:bg-indigo-200' }}">
+                <i class="fa-solid fa-bullhorn {{ request()->routeIs('admin.pengumuman') ? 'text-white' : 'text-indigo-600' }}"></i>
+            </div>
+            <span class="font-medium">Mading Digital</span>
+        </a>
+        
+        <a href="{{ route('admin.nilai') }}" 
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group
+           {{ request()->routeIs('admin.nilai') 
+                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30' 
+                : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600' }}">
+            <div class="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300
+                {{ request()->routeIs('admin.nilai') 
+                    ? 'bg-white/20' 
+                    : 'bg-fuchsia-100 group-hover:bg-fuchsia-200' }}">
+                <i class="fa-solid fa-graduation-cap {{ request()->routeIs('admin.nilai') ? 'text-white' : 'text-fuchsia-600' }}"></i>
+            </div>
+            <span class="font-medium">Nilai Akademik</span>
+        </a>
+        
         <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group text-gray-600 hover:bg-blue-50 hover:text-blue-600">
             <div class="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 bg-cyan-100 group-hover:bg-cyan-200">
                 <i class="fa-solid fa-calendar-days text-cyan-600"></i>

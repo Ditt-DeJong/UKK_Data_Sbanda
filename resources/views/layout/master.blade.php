@@ -7,7 +7,7 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>
       @hasSection('title')
       @yield('title') - Data Sbanda
@@ -15,13 +15,17 @@
         Data Sbanda
       @endif
     </title>
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
 
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
 
     <style>
       body {
-        font-family: 'Inter', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+        font-family: 'Poppins', sans-serif;
+      }
+      h1, h2, h3, h4, h5, h6, .navbar-brand, .btn-futuristic {
+        font-family: 'Outfit', sans-serif;
       }
     </style>
   </head>

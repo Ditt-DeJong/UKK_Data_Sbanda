@@ -7,10 +7,8 @@
 /* ===== FUTURISTIC DESIGN SYSTEM ===== */
 
 @theme {
-    --font-sans:
-        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
-        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-        "Noto Color Emoji";
+    --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+    --font-display: "Outfit", sans-serif;
 }
 
 /* ===== KEYFRAME ANIMATIONS ===== */
@@ -549,4 +547,42 @@
 /* Legacy Bootstrap Override */
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml,...");
+}
+
+/* ===== STATUS BADGE STYLES ===== */
+
+.badge-amber {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgb(254 243 199);
+    color: rgb(180 83 9);
+}
+
+.badge-emerald {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgb(209 250 229);
+    color: rgb(4 120 87);
+}
+
+.badge-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgb(254 226 226);
+    color: rgb(185 28 28);
 }

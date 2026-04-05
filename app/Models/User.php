@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Models\Kehadiran;
-use App\Models\data_siswa;
-use App\Models\data_orang_tua;
 
 class User extends Authenticatable
 {
@@ -37,12 +34,12 @@ class User extends Authenticatable
 
     public function dataSiswa()
     {
-        return $this->hasOne(data_siswa::class, 'user_id');
+        return $this->hasOne(DataSiswa::class, 'user_id');
     }
 
     public function dataOrangTua()
     {
-        return $this->hasOne(data_orang_tua::class, 'user_id');
+        return $this->hasOne(DataOrangTua::class, 'user_id');
     }
 
     // Relasi ke Kehadiran
@@ -66,18 +63,18 @@ class User extends Authenticatable
     // Method untuk mendapatkan statistik kehadiran
     public function getStatistikKehadiran($bulan = null, $tahun = null)
     {
-        $query = $this->kehadiran();
-        
+        $baseQuery = $this->kehadiran();
+
         if ($bulan && $tahun) {
-            $query->whereYear('tanggal', $tahun)
-                  ->whereMonth('tanggal', $bulan);
+            $baseQuery->whereYear('tanggal', $tahun)
+                ->whereMonth('tanggal', $bulan);
         }
 
-        $total = $query->count();
-        $hadir = $query->where('status', 'HADIR')->count();
-        $izin = $query->whereIn('status', ['IZIN', 'SAKIT'])->count();
-        $alpha = $query->where('status', 'ALPHA')->count();
-        
+        $total = (clone $baseQuery)->count();
+        $hadir = (clone $baseQuery)->where('status', 'HADIR')->count();
+        $izin = (clone $baseQuery)->whereIn('status', ['IZIN', 'SAKIT'])->count();
+        $alpha = (clone $baseQuery)->where('status', 'ALPHA')->count();
+
         $persentase = $total > 0 ? round(($hadir / $total) * 100, 1) : 0;
 
         return [
@@ -85,7 +82,7 @@ class User extends Authenticatable
             'hadir' => $hadir,
             'izin' => $izin,
             'alpha' => $alpha,
-            'persentase' => $persentase
+            'persentase' => $persentase,
         ];
     }
 }

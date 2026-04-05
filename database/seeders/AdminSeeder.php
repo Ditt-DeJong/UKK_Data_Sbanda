@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
@@ -15,8 +15,8 @@ class AdminSeeder extends Seeder
     {
         // Cek apakah admin sudah ada
         $adminExists = User::where('email', 'admin@sbanda.com')->first();
-        
-        if (!$adminExists) {
+
+        if (! $adminExists) {
             User::create([
                 'name' => 'Administrator',
                 'email' => 'admin@sbanda.com',
@@ -24,7 +24,7 @@ class AdminSeeder extends Seeder
                 'role' => 'admin',
                 'is_completed' => true,
             ]);
-            
+
             $this->command->info('✓ Admin user created successfully!');
             $this->command->info('  Email: admin@sbanda.com');
             $this->command->info('  Password: admin123');

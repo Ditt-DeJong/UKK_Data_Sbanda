@@ -16,13 +16,13 @@ return new class extends Migration
             // But since this is a modification of existing columns, let's assume `alamat` and `agama` are the correct names.
             if (Schema::hasColumn('data_orang_tua', 'alamat_orang_tua')) {
                 $table->string('alamat_orang_tua')->nullable()->change();
-            } else if (Schema::hasColumn('data_orang_tua', 'alamat')) {
+            } elseif (Schema::hasColumn('data_orang_tua', 'alamat')) {
                 $table->string('alamat')->nullable()->change();
             }
 
             if (Schema::hasColumn('data_orang_tua', 'agama_orang_tua')) {
                 $table->string('agama_orang_tua')->nullable()->change();
-            } else if (Schema::hasColumn('data_orang_tua', 'agama')) {
+            } elseif (Schema::hasColumn('data_orang_tua', 'agama')) {
                 $table->string('agama')->nullable()->change();
             }
 

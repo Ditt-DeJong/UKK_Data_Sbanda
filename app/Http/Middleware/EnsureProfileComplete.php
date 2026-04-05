@@ -19,7 +19,7 @@ class EnsureProfileComplete
         $user = $request->user();
 
         // Jika user belum login, biarkan middleware auth yang handle
-        if (!$user) {
+        if (! $user) {
             return $next($request);
         }
 
@@ -30,19 +30,21 @@ class EnsureProfileComplete
 
         // Cek apakah sudah lengkap (flag is_completed)
         // Cek apakah sudah mengisi data siswa
-        if (!$user->dataSiswa) {
+        if (! $user->dataSiswa) {
             if ($request->routeIs('lengkapi1') || $request->routeIs('lengkapi1.submit')) {
                 return $next($request);
             }
+
             return redirect()->route('lengkapi1')
                 ->with('warning', 'Silakan lengkapi data siswa terlebih dahulu.');
         }
 
         // Cek apakah sudah mengisi data orang tua
-        if (!$user->dataOrangTua) {
+        if (! $user->dataOrangTua) {
             if ($request->routeIs('lengkapi2.form') || $request->routeIs('lengkapi2.submit')) {
                 return $next($request);
             }
+
             return redirect()->route('lengkapi2.form')
                 ->with('warning', 'Silakan lengkapi data orang tua terlebih dahulu.');
         }
@@ -52,6 +54,7 @@ class EnsureProfileComplete
             if ($request->routeIs('waiting.room')) {
                 return $next($request);
             }
+
             return redirect()->route('waiting.room');
         }
 

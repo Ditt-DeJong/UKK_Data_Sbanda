@@ -1,3 +1,4 @@
+@php $dataSiswaPending = $dataSiswaPending ?? collect(); @endphp
 @push('modals')
 <div id="notifModal" class="hidden fixed inset-0 flex items-center justify-center pt-4 px-4 z-[70]">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300">

@@ -4,19 +4,19 @@
   <div class="orb orb-cyan w-32 h-32 -top-10 -left-10 opacity-30"></div>
   <div class="orb orb-blue w-24 h-24 -bottom-8 -right-8 opacity-20"></div>
   
-  <div class="h-20 relative mx-auto px-6 flex items-center justify-between">
+  <div class="h-24 relative mx-auto px-8 flex items-center justify-between">
 
     {{-- identitas website --}}
-    <div class="flex items-center space-x-3 group cursor-pointer">
+    <div class="flex items-center space-x-4 group cursor-pointer">
       {{-- Logo icon with glow --}}
-      <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 group-hover:glow-white">
-        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
+      <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 group-hover:glow-white">
+        <svg class="w-9 h-9 text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z"/>
         </svg>
       </div>
       <div class="flex flex-col leading-tight">
-        <span class="font-bold text-2xl text-white text-glow-white tracking-tight">Data SBANDA</span>
-        <span class="text-blue-100/80 text-sm font-medium">Portal Orang Tua</span>
+        <span class="font-bold text-3xl text-white text-glow-white tracking-tight">Data SBANDA</span>
+        <span class="text-blue-100/80 text-base font-medium">Portal Orang Tua</span>
       </div>
     </div>
 
@@ -30,11 +30,11 @@
     </button>
 
     {{-- isi navbar --}}
-    <ul id="menu" class="hidden lg:flex flex-1 items-center justify-center space-x-8 list-none text-lg m-0">
+    <ul id="menu" class="hidden lg:flex flex-1 items-center justify-center space-x-10 list-none text-xl m-0">
       <li class="animate-fade-in" style="animation-delay: 0.1s">
-        <a href="{{ route('kehadiran') }}" class="nav-link-futuristic !no-underline flex items-center gap-2
+        <a href="{{ route('kehadiran') }}" class="nav-link-futuristic !no-underline flex items-center gap-2.5 px-6 py-3
         {{ request()->routeIs('kehadiran') ? 'bg-white/20 glow-blue-sm' : '' }}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
           Kehadiran
@@ -42,9 +42,9 @@
       </li>
 
       <li class="animate-fade-in" style="animation-delay: 0.2s">
-        <a href="{{ route('ajukanizin') }}" class="nav-link-futuristic !no-underline flex items-center gap-2
+        <a href="{{ route('ajukanizin') }}" class="nav-link-futuristic !no-underline flex items-center gap-2.5 px-6 py-3
         {{ request()->routeIs('ajukanizin') ? 'bg-white/20 glow-blue-sm' : '' }}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
           Ajukan Izin
@@ -52,9 +52,9 @@
       </li>
 
       <li class="animate-fade-in" style="animation-delay: 0.3s">
-        <a href="{{ route('jadwalkelas') }}" class="nav-link-futuristic !no-underline flex items-center gap-2
+        <a href="{{ route('jadwalkelas') }}" class="nav-link-futuristic !no-underline flex items-center gap-2.5 px-6 py-3
         {{ request()->routeIs('jadwalkelas') ? 'bg-white/20 glow-blue-sm' : '' }}">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
           Jadwal Kelas
@@ -73,27 +73,27 @@
       {{-- Profile dropdown trigger --}}
       <div class="relative" id="profile-dropdown-container">
         <button type="button" id="profile-dropdown-btn" 
-          class="flex items-center space-x-3 p-2 rounded-xl hover:bg-white/10 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/30">
+          class="flex items-center space-x-4 p-3 rounded-2xl hover:bg-white/10 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/30">
           
           {{-- nama user --}}
           <div class="text-right">
-            <span class="text-white font-semibold text-lg block">
+            <span class="text-white font-semibold text-xl block">
               {{ $nama }}
             </span>
-            <span class="text-blue-100/70 text-xs">Online</span>
+            <span class="text-blue-100/70 text-sm">Online</span>
           </div>
 
           {{-- lingkaran inisial dengan glow --}}
           <div class="relative">
-            <div class="w-11 h-11 bg-white text-blue-600 font-bold flex items-center justify-center rounded-xl shadow-lg group-hover:glow-white transition-all duration-300">
+            <div class="w-12 h-12 text-xl bg-white text-blue-600 font-bold flex items-center justify-center rounded-2xl shadow-lg group-hover:glow-white transition-all duration-300">
               {{ $inisial }}
             </div>
             {{-- Online indicator --}}
-            <div class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-400 rounded-full border-2 border-blue-600 animate-pulse"></div>
+            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-blue-600 animate-pulse"></div>
           </div>
 
           {{-- Dropdown arrow --}}
-          <svg id="dropdown-arrow" class="w-4 h-4 text-white/70 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg id="dropdown-arrow" class="w-5 h-5 text-white/70 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </button>

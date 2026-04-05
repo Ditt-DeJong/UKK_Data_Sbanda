@@ -66,25 +66,46 @@
                 </div>
             </div>
 
-            <!-- Alasan Penolakan -->
-            <div id="reject-section" class="hidden border-t pt-6 mb-6">
-                <label class="text-sm text-gray-700 mb-2 block font-semibold">Alasan Penolakan (jika ditolak)</label>
-                <textarea 
-                    id="alasan-penolakan" 
-                    class="w-full border border-blue-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
-                    rows="3"
-                    placeholder="Masukkan alasan jika menolak ijin ini..."></textarea>
+            <!-- Lampiran -->
+            <div id="modal-lampiran-section" class="border-t pt-6 mb-6 hidden">
+                <p class="text-sm text-gray-500 mb-2">Lampiran</p>
+                <button type="button" id="modal-lampiran-btn" onclick="openLampiranFromDetail()" class="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-semibold bg-blue-50 px-4 py-2 rounded-xl transition-all cursor-pointer">
+                    <i class="fa-solid fa-paperclip"></i> Lihat Lampiran
+                </button>
             </div>
 
+
             <!-- Tombol Aksi -->
-            <div class="grid grid-cols-2 gap-4">
-                <button id="approveBtn" class="bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-check-circle"></i> Setujui Ijin
-                </button>
-                <button id="rejectBtn" class="bg-red-100 text-red-600 py-3 rounded-lg font-semibold border-2 border-red-400 hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2">
+            <div id="modal-actions" class="grid grid-cols-2 gap-4">
+                <form id="approveForm" method="POST">
+                    @csrf
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-check-circle"></i> Setujui Ijin
+                    </button>
+                </form>
+                
+                <button type="button" id="toggleRejectBtn" class="bg-red-100 text-red-600 py-3 rounded-lg font-semibold border-2 border-red-400 hover:bg-red-600 hover:text-white transition-colors flex items-center justify-center gap-2">
                     <i class="fa-solid fa-times-circle"></i> Tolak Ijin
                 </button>
             </div>
+
+            <!-- Form Penolakan Tersembunyi -->
+            <form id="rejectFormReal" method="POST" class="hidden mt-4 pt-4 border-t">
+                @csrf
+                <div class="mb-4">
+                    <label class="text-sm text-gray-700 mb-2 block font-semibold">Alasan Penolakan</label>
+                    <textarea 
+                        name="alasan_penolakan" 
+                        class="w-full border border-red-300 rounded-lg p-3 focus:ring-2 focus:ring-red-500 outline-none"
+                        rows="3"
+                        required
+                        placeholder="Masukkan alasan jika menolak ijin ini..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button type="button" id="cancelRejectBtn" class="bg-gray-100 text-gray-600 py-2 rounded-lg font-semibold">Batal</button>
+                    <button type="submit" class="bg-red-600 text-white py-2 rounded-lg font-semibold">Kirim Penolakan</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -96,9 +117,6 @@
     // === DETAIL MODAL FUNCTIONS ===
 const detailModal = document.getElementById("detailModal");
 const closeDetailBtn = document.getElementById("closeDetailModal");
-const rejectBtn = document.getElementById("rejectBtn");
-const approveBtn = document.getElementById("approveBtn");
-const rejectSection = document.getElementById("reject-section");
 
 // Function untuk membuka detail modal
 window.openDetailModal = function(data) {
@@ -112,16 +130,41 @@ window.openDetailModal = function(data) {
     document.getElementById("modal-diajukan").textContent = data.diajukan;
     document.getElementById("modal-keterangan").textContent = data.keterangan;
     
+    // Lampiran
+    const lampiranSection = document.getElementById("modal-lampiran-section");
+    window._currentLampiranUrl = data.lampiran || '';
+    window._currentLampiranNama = data.nama || '';
+    if (data.lampiran) {
+        lampiranSection.classList.remove("hidden");
+    } else {
+        lampiranSection.classList.add("hidden");
+    }
+
     const statusBadge = document.getElementById("modal-status");
     statusBadge.textContent = data.status;
     statusBadge.className = "inline-block px-3 py-1 rounded-full text-sm font-semibold";
     
+    // Form Actions
+    const approveForm = document.getElementById("approveForm");
+    const rejectForm = document.getElementById("rejectFormReal");
+    const modalActions = document.getElementById("modal-actions");
+    
+    approveForm.action = `/admin/kelola-izin/${data.id}/approve`;
+    rejectForm.action = `/admin/kelola-izin/${data.id}/reject`;
+
+    // Reset reject form visibility
+    rejectForm.classList.add("hidden");
+
     if (data.status === "Pending") {
         statusBadge.classList.add("bg-orange-100", "text-orange-700");
-    } else if (data.status === "Disetujui") {
-        statusBadge.classList.add("bg-green-100", "text-green-700");
-    } else if (data.status === "Ditolak") {
-        statusBadge.classList.add("bg-red-100", "text-red-700");
+        modalActions.classList.remove("hidden");
+    } else {
+        modalActions.classList.add("hidden");
+        if (data.status === "Approved" || data.status === "Disetujui") {
+            statusBadge.classList.add("bg-green-100", "text-green-700");
+        } else {
+            statusBadge.classList.add("bg-red-100", "text-red-700");
+        }
     }
 
     // Tampilkan modal detail
@@ -135,22 +178,30 @@ closeDetailBtn?.addEventListener("click", () => {
     detailModal.classList.add("hidden");
     overlay.classList.add("hidden");
     document.body.classList.remove("overflow-hidden");
-    rejectSection.classList.add("hidden");
+    document.getElementById("rejectFormReal").classList.add("hidden");
+    document.getElementById("modal-actions").classList.remove("hidden");
 });
 
-// Toggle reject section
-rejectBtn?.addEventListener("click", () => {
-    rejectSection.classList.toggle("hidden");
+// Toggle reject form
+document.getElementById("toggleRejectBtn")?.addEventListener("click", () => {
+    document.getElementById("modal-actions").classList.add("hidden");
+    document.getElementById("rejectFormReal").classList.remove("hidden");
 });
 
-// Approve button
-approveBtn?.addEventListener("click", () => {
-    if (confirm("Apakah Anda yakin ingin menyetujui ijin ini?")) {
-        alert("Ijin berhasil disetujui!");
+document.getElementById("cancelRejectBtn")?.addEventListener("click", () => {
+    document.getElementById("modal-actions").classList.remove("hidden");
+    document.getElementById("rejectFormReal").classList.add("hidden");
+});
+
+// Open lampiran popup from detail modal
+window.openLampiranFromDetail = function() {
+    if (window._currentLampiranUrl) {
+        // Close detail modal first
         detailModal.classList.add("hidden");
         overlay.classList.add("hidden");
-        document.body.classList.remove("overflow-hidden");
+        // Open lampiran popup
+        openLampiranPopup(window._currentLampiranUrl, window._currentLampiranNama);
     }
-});
+}
 </script>
 @endpush

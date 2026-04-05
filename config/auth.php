@@ -12,7 +12,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        
+
         // Guard untuk Admin
         'admin' => [
             'driver' => 'session',
@@ -25,7 +25,7 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        
+
         // Provider untuk Admin (menggunakan User model)
         'admins' => [
             'driver' => 'eloquent',

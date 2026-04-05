@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('data_siswa', function (Blueprint $table) {
-            $table->string("Nama siswa", 100)->change();
-            $table->string("Tempat_Tanggal_Lahir")->after("Umur")->change();
-            $table->string("Agama")->after("Tempat_Tanggal_Lahir")->change();
-            $table->string("Kelas", 20)->change();
+            $table->string('Nama siswa', 100)->change();
+            $table->string('Tempat_Tanggal_Lahir')->after('Umur')->change();
+            $table->string('Agama')->after('Tempat_Tanggal_Lahir')->change();
+            $table->string('Kelas', 20)->change();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('data_siswa', function (Blueprint $table) {
-            $table->string("Nama siswa", 150)->change();
-            $table->string("Kelas")->change();
+            $table->string('Nama siswa', 150)->change();
+            $table->string('Kelas')->change();
         });
     }
 };

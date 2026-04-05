@@ -12,18 +12,18 @@ return new class extends Migration
     public function up()
     {
         Schema::table('data_siswa', function (Blueprint $table) {
-            
+
             // Rename kolom ke snake_case standar
             $table->renameColumn('Umur', 'umur');
             $table->renameColumn('Agama', 'agama');
             $table->renameColumn('Alamat', 'alamat');
             $table->renameColumn('Kelas', 'kelas');
         });
-            // Menambahkan kolom baru 'status'
+        // Menambahkan kolom baru 'status'
         Schema::table('data_siswa', function (Blueprint $table) {
             $table->enum('status', ['aktif', 'pending', 'nonaktif'])
-                  ->default('aktif')
-                  ->after('kelas'); // opsional
+                ->default('aktif')
+                ->after('kelas'); // opsional
         });
     }
 

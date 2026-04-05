@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('data_orang_tua', function (Blueprint $table) {
             $table->id();
-            $table->string("Nama_Orang_Tua", 150);
-            $table->tinyInteger("Umur")->unsigned();
-            $table->string("Alamat", 100);
-            $table->bigInteger("NIK_Orang_Tua");
-            $table->enum("Agama" , ["Islam", "Kristen", "Katolik", "Hindhu", "Buddha", "Konghucu"]);
-            $table->string("Pekerjaan", 50);
-            $table->bigInteger("Nomor_telepon");
-            $table->tinyInteger("Kode_Pos");
+            $table->string('Nama_Orang_Tua', 150);
+            $table->tinyInteger('Umur')->unsigned();
+            $table->string('Alamat', 100);
+            $table->bigInteger('NIK_Orang_Tua');
+            $table->enum('Agama', ['Islam', 'Kristen', 'Katolik', 'Hindhu', 'Buddha', 'Konghucu']);
+            $table->string('Pekerjaan', 50);
+            $table->bigInteger('Nomor_telepon');
+            $table->tinyInteger('Kode_Pos');
             $table->timestamps();
         });
     }

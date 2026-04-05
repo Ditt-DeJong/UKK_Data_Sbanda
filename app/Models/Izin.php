@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Izins extends Model
+class Izin extends Model
 {
     use HasFactory;
 
@@ -19,10 +19,12 @@ class Izins extends Model
         'alasan',
         'keterangan',
         'status',
+        'lampiran',
+        'alasan_penolakan',
     ];
 
     public function siswa()
     {
-        return $this->belongsTo(Data_siswa::class, 'siswa_id');
+        return $this->belongsTo(DataSiswa::class, 'siswa_id');
     }
 }

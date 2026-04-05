@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('data_siswa', function (Blueprint $table) {
             $table->id();
-            $table->string("Nama siswa", 150);
-            $table->tinyInteger("Umur")->unsigned();
-            $table->string("Alamat", 100);
-            $table->string("Kelas");
-            $table->bigInteger("NIK_Siswa");
-            $table->enum("Agama" , ["Islam", "Kristen", "Katolik", "Hindhu", "Buddha", "Konghucu"]);
-            $table->string("Tempat_Tanggal_Lahir");
+            $table->string('Nama siswa', 150);
+            $table->tinyInteger('Umur')->unsigned();
+            $table->string('Alamat', 100);
+            $table->string('Kelas');
+            $table->bigInteger('NIK_Siswa');
+            $table->enum('Agama', ['Islam', 'Kristen', 'Katolik', 'Hindhu', 'Buddha', 'Konghucu']);
+            $table->string('Tempat_Tanggal_Lahir');
             $table->timestamps();
         });
     }

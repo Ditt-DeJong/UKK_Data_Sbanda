@@ -1,14 +1,15 @@
 <?php
+
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\DataOrangTua;
+use App\Models\DataSiswa;
+use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Models\data_siswa;
-use App\Models\data_orang_tua;
-use Illuminate\Http\RedirectResponse;
 
 class UserAuthController extends Controller
 {
@@ -18,12 +19,12 @@ class UserAuthController extends Controller
         return view('auth.register');
     }
 
-     // PROSES REGISTER
+    // PROSES REGISTER
     public function register(Request $request)
     {
         $userData = $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6',
         ]);
 
@@ -31,8 +32,8 @@ class UserAuthController extends Controller
 
         // SIMPAN USER
         $user = User::create($userData);
-        // LOGIN USER  
-        
+        // LOGIN USER
+
         // LOGIN ULANG
         return redirect()->route(route: 'login');
     }
@@ -66,18 +67,19 @@ class UserAuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate(); // amankan session
 
-             $user = Auth::user();
+            $user = Auth::user();
 
             // Jika user adalah admin, logout dari guard web dan login via guard admin
             if ($user->role === 'admin') {
                 Auth::guard('web')->logout();
                 Auth::guard('admin')->login($user, $request->boolean('remember'));
                 $request->session()->regenerate();
+
                 return redirect()->route('admin.dashboard');
             }
 
             // Jika belum melengkapi data, arahkan ke form kelengkapan
-            if (!$user->is_completed) {
+            if (! $user->is_completed) {
                 return redirect()->route('lengkapi1');
             }
 
@@ -103,7 +105,7 @@ class UserAuthController extends Controller
             'kelas' => 'required|string',
         ]);
 
-        data_siswa::create([
+        DataSiswa::create([
             'user_id' => Auth::id(),
             'nama_siswa' => $request->nama_lengkap,
             'nik_siswa' => $request->nik,
@@ -114,10 +116,10 @@ class UserAuthController extends Controller
             'kelas' => $request->kelas,
         ]);
 
-    return redirect()->route('lengkapi2.form');
+        return redirect()->route('lengkapi2.form');
     }
 
-        public function submitLengkapi2(Request $request)
+    public function submitLengkapi2(Request $request)
     {
         $request->validate([
             'nama_wali' => 'required|string|max:255',
@@ -129,9 +131,9 @@ class UserAuthController extends Controller
             'peran_wali' => 'required|string|max:50',
         ]);
 
-        $siswa_id = data_siswa::where('user_id', Auth::id())->first()->id;
+        $siswa_id = DataSiswa::where('user_id', Auth::id())->first()->id;
 
-        data_orang_tua::create([
+        DataOrangTua::create([
             'user_id' => Auth::id(),
             'siswa_id' => $siswa_id,
             'nama_orang_tua' => $request->nama_wali,

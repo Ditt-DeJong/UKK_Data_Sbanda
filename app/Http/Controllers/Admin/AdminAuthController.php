@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
-
     public function showLoginAdminForm()
     {
         return view('admin.login_admin');
@@ -17,24 +16,26 @@ class AdminAuthController extends Controller
     public function loginAdmin(Request $request)
     {
         $credentials = $request->validate([
-            'email'    => ['required','email'],
+            'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         // Attempt login dengan guard 'admin'
         if (Auth::guard('admin')->attempt($credentials, $request->boolean('remember'))) {
-            
+
             // Cek apakah user yang login adalah admin
             $user = Auth::guard('admin')->user();
-            
+
             if ($user->role !== 'admin') {
                 Auth::guard('admin')->logout();
+
                 return back()->withErrors([
                     'email' => 'Akses ditolak. Hanya admin yang bisa login.',
                 ])->onlyInput('email');
             }
-            
+
             $request->session()->regenerate();
+
             return redirect()->route('admin.dashboard');
         }
 
@@ -48,7 +49,7 @@ class AdminAuthController extends Controller
         Auth::guard('admin')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return redirect()->route('admin.login');
     }
 }
