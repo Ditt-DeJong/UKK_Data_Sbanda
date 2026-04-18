@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\IzinController;
 use App\Http\Controllers\User\MainController;
@@ -45,8 +44,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
 });
 
-// Route yang memerlukan profil lengkap dan absensi otomatis
-Route::middleware(['auth', 'profile.complete', 'cek.kehadiran'])->group(function () {
+// Route yang memerlukan profil lengkap
+Route::middleware(['auth', 'profile.complete'])->group(function () {
     Route::get('/', [MainController::class, 'kehadiran'])->name('kehadiran');
     Route::get('/ajukanizin', [MainController::class, 'ajukanizin'])->name('ajukanizin');
     Route::post('/ajukanizin', [MainController::class, 'submitIzin'])->name('izin.submit');
@@ -58,10 +57,7 @@ Route::middleware(['auth', 'profile.complete', 'cek.kehadiran'])->group(function
 // ADMIN ROUTES
 // ============================================
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/login', [AdminAuthController::class, 'showLoginAdminForm'])->name('login');
-    Route::post('/login', [AdminAuthController::class, 'loginAdmin'])->name('login.submit');
-});
+
 
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Dashboard
@@ -81,11 +77,19 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Kehadiran Siswa
     Route::get('/kehadiransiswa', [AdminController::class, 'kehadiran'])->name('kehadiransiswa');
+    Route::post('/kehadiransiswa/bulk', [AdminController::class, 'bulkHadir'])->name('kehadiransiswa.bulk');
+    Route::put('/kehadiransiswa/update', [AdminController::class, 'updateKehadiran'])->name('kehadiransiswa.update');
 
     // Kelola Izin
     Route::get('/kelola-izin', [IzinController::class, 'index'])->name('kelola_izin');
     Route::post('/kelola-izin/{id}/approve', [IzinController::class, 'approve'])->name('kelola_izin.approve');
     Route::post('/kelola-izin/{id}/reject', [IzinController::class, 'reject'])->name('kelola_izin.reject');
+
+    // Kelola Jadwal
+    Route::get('/kelola-jadwal', [\App\Http\Controllers\Admin\JadwalController::class, 'index'])->name('jadwal');
+    Route::post('/kelola-jadwal', [\App\Http\Controllers\Admin\JadwalController::class, 'store'])->name('jadwal.store');
+    Route::put('/kelola-jadwal/{id}', [\App\Http\Controllers\Admin\JadwalController::class, 'update'])->name('jadwal.update');
+    Route::delete('/kelola-jadwal/{id}', [\App\Http\Controllers\Admin\JadwalController::class, 'destroy'])->name('jadwal.destroy');
 
     // Pengumuman
     Route::get('/pengumuman', [\App\Http\Controllers\Admin\PengumumanController::class, 'index'])->name('pengumuman');
@@ -101,5 +105,5 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::delete('/nilai/{id}', [\App\Http\Controllers\Admin\NilaiAkademikController::class, 'destroy'])->name('nilai.destroy');
 
     // Logout
-    Route::post('/logout', [AdminAuthController::class, 'logoutAdmin'])->name('logout');
+    Route::post('/logout', [UserAuthController::class, 'logout'])->name('logout');
 });

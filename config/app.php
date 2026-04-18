@@ -123,4 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'guru_whatsapp' => env('GURU_WHATSAPP', '6281234567890'),
+    'batas_jam_hadir' => env('BATAS_JAM_HADIR', '08:00'),
+
 ];

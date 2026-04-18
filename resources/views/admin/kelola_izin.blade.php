@@ -178,13 +178,13 @@
                                 </button>
                                 
                                 @if($izin->status == 'pending')
-                                <form action="{{ route('admin.kelola_izin.approve', $izin->id) }}" method="POST" class="inline">
+                                <form action="{{ route('admin.kelola_izin.approve', $izin->id) }}" method="POST" class="inline form-confirm" data-confirm-title="Setujui Ijin" data-confirm-message="Apakah Anda yakin ingin menyetujui permohonan ijin ini?" data-confirm-danger="false">
                                     @csrf
                                     <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all duration-200" title="Setujui">
                                         <i class="fa-solid fa-check"></i>
                                     </button>
                                 </form>
-                                <form action="{{ route('admin.kelola_izin.reject', $izin->id) }}" method="POST" class="inline">
+                                <form action="{{ route('admin.kelola_izin.reject', $izin->id) }}" method="POST" class="inline form-confirm" data-confirm-title="Tolak Ijin" data-confirm-message="Apakah Anda yakin ingin menolak permohonan ijin ini?" data-confirm-danger="true">
                                     @csrf
                                     <button type="submit" class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all duration-200" title="Tolak">
                                         <i class="fa-solid fa-xmark"></i>

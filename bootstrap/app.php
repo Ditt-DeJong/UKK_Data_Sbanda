@@ -13,7 +13,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         //
         $middleware->alias([
-            'cek.kehadiran' => \App\Http\Middleware\CekKehadiranHarian::class,
             'admin' => \App\Http\Middleware\IsAdmin::class,
             'profile.complete' => \App\Http\Middleware\EnsureProfileComplete::class,
         ]);

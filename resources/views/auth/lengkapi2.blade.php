@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -10,10 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Lengkapi Data Orang Tua - Data Sbanda</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <style>
-      body { font-family: 'Poppins', sans-serif; }
-      h1, h2, h3, h4, .btn-futuristic { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="min-h-screen bg-gradient-animated relative">
     
@@ -179,12 +175,12 @@
                                 name="agama_wali"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="Islam">☪️ Islam</option>
-                                <option value="Kristen">✝️ Kristen</option>
-                                <option value="Katolik">⛪ Katolik</option>
-                                <option value="Hindu">🕉️ Hindu</option>
-                                <option value="Buddha">☸️ Buddha</option>
-                                <option value="Konghucu">☯️ Konghucu</option>
+                                <option value="Islam">Islam</option>
+                                <option value="Kristen">Kristen</option>
+                                <option value="Katolik">Katolik</option>
+                                <option value="Hindu">Hindu</option>
+                                <option value="Buddha">Buddha</option>
+                                <option value="Konghucu">Konghucu</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,14 +206,14 @@
                                 name="pekerjaan_wali"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="Pegawai Negri">🏛️ Pegawai Negri</option>
-                                <option value="Pegawai Swasta">🏢 Pegawai Swasta</option>
-                                <option value="Kehutanan">🌲 Kehutanan</option>
-                                <option value="Kesehatan">🏥 Kesehatan</option>
-                                <option value="Keamanan">🛡️ Keamanan</option>
-                                <option value="Mengurus Rumah Tangga">🏠 Ibu Rumah Tangga</option>
-                                <option value="Yang Lainnya">📋 Lainnya</option>
-                                <option value="Tidak Bekerja">❌ Tidak Bekerja</option>
+                                <option value="Pegawai Negri">Pegawai Negri</option>
+                                <option value="Pegawai Swasta">Pegawai Swasta</option>
+                                <option value="Kehutanan">Kehutanan</option>
+                                <option value="Kesehatan">Kesehatan</option>
+                                <option value="Keamanan">Keamanan</option>
+                                <option value="Mengurus Rumah Tangga">Ibu Rumah Tangga</option>
+                                <option value="Yang Lainnya">Lainnya</option>
+                                <option value="Tidak Bekerja">Tidak Bekerja</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,10 +239,10 @@
                                 name="peran_wali"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="Ayah">👨 Ayah</option>
-                                <option value="Ibu">👩 Ibu</option>
-                                <option value="Kakak_yatim">👤 Kakak (bila yatim)</option>
-                                <option value="Paman_Bibi_yatim">👥 Paman/Bibi (bila yatim)</option>
+                                <option value="Ayah">Ayah</option>
+                                <option value="Ibu">Ibu</option>
+                                <option value="Kakak_yatim">Kakak (bila yatim)</option>
+                                <option value="Paman_Bibi_yatim">Paman/Bibi (bila yatim)</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

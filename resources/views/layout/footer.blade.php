@@ -1,75 +1,61 @@
-{{-- Footer Futuristic --}}
-<footer class="relative mt-auto overflow-hidden">
-  {{-- Gradient top border --}}
-  <div class="h-1 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500"></div>
-  
-  {{-- Main footer content --}}
-  <div class="navbar-futuristic py-8 px-6">
-    {{-- Decorative orbs --}}
-    <div class="orb orb-cyan w-40 h-40 -bottom-20 left-1/4 opacity-20"></div>
-    <div class="orb orb-blue w-32 h-32 -bottom-16 right-1/3 opacity-15"></div>
-    
-    <div class="relative max-w-7xl mx-auto">
-      <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
-        
-        {{-- Logo and school info --}}
-        <div class="flex items-center space-x-4 group animate-fade-in">
-          <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-all duration-300 group-hover:glow-white">
-            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z"/>
-            </svg>
-          </div>
-          <div class="flex flex-col leading-tight">
-            <span class="font-bold text-2xl text-white text-glow-white">SD Bandungrejo 2</span>
-            <span class="text-blue-100/70 text-sm flex items-center gap-2">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-              Mijen, Semarang
-            </span>
-          </div>
+<footer class="mt-auto z-10 w-full bg-white border-t border-slate-200 pt-12 pb-8 px-4 sm:px-8 xl:px-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10">
+        {{-- Branding --}}
+        <div class="flex flex-col items-center md:items-start text-center md:text-left">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shrink-0 text-white shadow-md">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-black text-xl text-slate-900 tracking-tight leading-none">SD Bandungrejo 2</h3>
+                    <p class="text-blue-600 font-bold text-[0.65rem] uppercase tracking-widest mt-1">Portal Orang Tua</p>
+                </div>
+            </div>
+            <p class="text-sm text-slate-500 font-medium leading-relaxed max-w-xs">
+                Sistem informasi kehadiran dan akademik terpadu untuk mempermudah peran serta orang tua dalam memantau perkembangan siswa di sekolah.
+            </p>
         </div>
 
-        {{-- Footer links --}}
-        <ul class="flex items-center gap-8 list-none m-0 animate-fade-in" style="animation-delay: 0.1s">
-          <li>
-            <a href="#" class="flex items-center gap-2 text-white/90 hover:text-white font-medium transition-all duration-300 hover:text-glow-white group">
-              <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-              </svg>
-              Kontak
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center gap-2 text-white/90 hover:text-white font-medium transition-all duration-300 hover:text-glow-white group">
-              <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              Bantuan
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center gap-2 text-white/90 hover:text-white font-medium transition-all duration-300 hover:text-glow-white group">
-              <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-              </svg>
-              Kebijakan
-            </a>
-          </li>
-        </ul>
-
-        {{-- Copyright --}}
-        <div class="flex items-center gap-3 text-blue-100/60 text-sm animate-fade-in" style="animation-delay: 0.2s">
-          <div class="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span>© 2025 Data Sbanda</span>
-          </div>
+        {{-- Layanan --}}
+        <div class="flex flex-col items-center md:items-start text-center md:text-left">
+            <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-4">Menu Utama</h4>
+            <ul class="space-y-3 font-semibold text-sm text-slate-500">
+                <li><a href="{{ route('kehadiran') }}" class="hover:text-blue-600 transition-colors">Cek Kehadiran Anak</a></li>
+                <li><a href="{{ route('ajukanizin') }}" class="hover:text-blue-600 transition-colors">Buat Surat Izin</a></li>
+                <li><a href="{{ route('jadwalkelas') }}" class="hover:text-blue-600 transition-colors">Lihat Jadwal Pelajaran</a></li>
+            </ul>
         </div>
 
-      </div>
+        {{-- Hubungi Kami --}}
+        <div class="flex flex-col items-center md:items-start text-center md:text-left">
+            <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wider mb-4">Pusat Bantuan</h4>
+            <ul class="space-y-3 font-semibold text-sm text-slate-500">
+                <li class="flex items-center gap-2 justify-center md:justify-start">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span>admin@sdbandungrejo2.sch.id</span>
+                </li>
+                <li class="flex items-center gap-2 justify-center md:justify-start">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    <span>Hubungi Guru Via Sistem</span>
+                </li>
+                <li class="flex items-center gap-2 justify-center md:justify-start mt-2">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-bold bg-green-50 text-green-700 border border-green-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span> Jam Layanan 07:00 - 15:00
+                    </span>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
+
+    {{-- Bottom Bar --}}
+    <div class="max-w-7xl mx-auto pt-6 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-xs text-slate-500 font-medium">
+            &copy; {{ date('Y') }} SD Bandungrejo 2. Hak Cipta Dilindungi Undang-Undang.
+        </p>
+        <div class="flex items-center gap-4 text-xs font-medium text-slate-400">
+            <a href="#" class="hover:text-blue-600 transition-colors">Kebijakan Privasi</a>
+            <span class="text-slate-200">&bull;</span>
+            <a href="#" class="hover:text-blue-600 transition-colors">Syarat & Ketentuan</a>
+        </div>
+    </div>
 </footer>

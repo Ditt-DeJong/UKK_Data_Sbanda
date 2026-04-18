@@ -20,7 +20,7 @@
             @foreach($nilai as $n)
             <tr class="hover:bg-fuchsia-50/50 transition-colors">
                 <td class="px-4 py-3 whitespace-nowrap">
-                    <form action="{{ route('admin.nilai.destroy', $n->id) }}" method="POST" onsubmit="return confirm('Hapus data nilai ini?');">
+                    <form action="{{ route('admin.nilai.destroy', $n->id) }}" method="POST" class="form-confirm" data-confirm-title="Hapus Nilai" data-confirm-message="Data nilai ini akan dihapus secara permanen. Lanjutkan?" data-confirm-danger="true">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="w-7 h-7 flex items-center justify-center rounded bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm">

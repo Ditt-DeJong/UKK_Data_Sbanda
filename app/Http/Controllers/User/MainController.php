@@ -13,7 +13,11 @@ class MainController extends Controller
 {
     public function jadwalkelas()
     {
-        return view('website.jadwalkelas');
+        $jadwal = \App\Models\Jadwal::orderBy('jam_mulai')
+            ->get()
+            ->groupBy('hari');
+
+        return view('website.jadwalkelas', compact('jadwal'));
     }
 
     public function ajukanizin()
@@ -87,12 +91,42 @@ class MainController extends Controller
         $tahun = Carbon::now()->year;
         $statistik = $user->getStatistikKehadiran($bulan, $tahun);
 
-        // Ambil kehadiran bulan ini
+        // Ambil riwayat kehadiran bulan ini langsung dari database
         $riwayatKehadiran = Kehadiran::where('user_id', $user->id)
-            ->whereYear('tanggal', Carbon::now()->year)
-            ->whereMonth('tanggal', Carbon::now()->month)
+            ->whereYear('tanggal', $tahun)
+            ->whereMonth('tanggal', $bulan)
             ->orderBy('tanggal', 'desc')
             ->get();
+
+        // ============================================
+        // CEK: Apakah kehadiran hari ini belum dicatat?
+        // Jika hari kerja & sudah lewat batas jam → tampilkan banner WA guru
+        // ============================================
+        $belumDiabsen = false;
+        $linkWaGuru = null;
+        $now = Carbon::now();
+
+        if ($now->isWeekday()) {
+            $batasJam = Carbon::today()->setTimeFromTimeString(config('app.batas_jam_hadir', '08:00'));
+            
+            $sudahAda = Kehadiran::where('user_id', $user->id)
+                ->whereDate('tanggal', Carbon::today())
+                ->exists();
+
+            // Juga cek apakah sudah mengajukan izin hari ini
+            $punyaIzin = \App\Models\Izin::where('user_id', $user->id)
+                ->where('tanggal_izin', Carbon::today()->toDateString())
+                ->whereIn('status', ['pending', 'approved'])
+                ->exists();
+
+            if (!$sudahAda && !$punyaIzin && $now->gte($batasJam)) {
+                $belumDiabsen = true;
+                $nomorGuru = config('app.guru_whatsapp', '6281234567890');
+                $namaSiswa = $user->dataSiswa->nama_siswa ?? 'anak saya';
+                $pesan = urlencode("Assalamualaikum Bapak/Ibu Guru,\nSaya orang tua dari {$namaSiswa}.\nSaya ingin menanyakan status kehadiran anak saya hari ini karena belum tercatat di sistem.\nTerima kasih.");
+                $linkWaGuru = "https://wa.me/{$nomorGuru}?text={$pesan}";
+            }
+        }
 
         // Ambil pengumuman aktif
         $pengumuman = \App\Models\Pengumuman::where('is_active', true)
@@ -110,6 +144,8 @@ class MainController extends Controller
             'riwayatKehadiran' => $riwayatKehadiran,
             'pengumuman' => $pengumuman,
             'nilaiAkademik' => $nilaiAkademik,
+            'belumDiabsen' => $belumDiabsen,
+            'linkWaGuru' => $linkWaGuru,
         ]);
     }
 }

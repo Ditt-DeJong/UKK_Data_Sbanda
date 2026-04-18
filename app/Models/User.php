@@ -60,7 +60,6 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
-    // Method untuk mendapatkan statistik kehadiran
     public function getStatistikKehadiran($bulan = null, $tahun = null)
     {
         $baseQuery = $this->kehadiran();
@@ -70,15 +69,32 @@ class User extends Authenticatable
                 ->whereMonth('tanggal', $bulan);
         }
 
-        $total = (clone $baseQuery)->count();
         $hadir = (clone $baseQuery)->where('status', 'HADIR')->count();
         $izin = (clone $baseQuery)->whereIn('status', ['IZIN', 'SAKIT'])->count();
-        $alpha = (clone $baseQuery)->where('status', 'ALPHA')->count();
+        $alphaDB = (clone $baseQuery)->where('status', 'ALPHA')->count();
 
-        $persentase = $total > 0 ? round(($hadir / $total) * 100, 1) : 0;
+        // Calculate total working days (Mon-Fri) in the month up to today
+        $now = \Carbon\Carbon::now();
+        $bulanFilter = $bulan ?: $now->month;
+        $tahunFilter = $tahun ?: $now->year;
+        
+        $startOfMonth = \Carbon\Carbon::create($tahunFilter, $bulanFilter, 1)->startOfMonth();
+        $endOfMonth = \Carbon\Carbon::create($tahunFilter, $bulanFilter, 1)->endOfMonth();
+        
+        $endDate = ($now->month == $bulanFilter && $now->year == $tahunFilter) ? $now : $endOfMonth;
+        
+        $totalHariKerja = 0;
+        for ($date = $startOfMonth->copy(); $date->lte($endDate); $date->addDay()) {
+            if ($date->isWeekday()) {
+                $totalHariKerja++;
+            }
+        }
+
+        $alpha = max($alphaDB, $totalHariKerja - ($hadir + $izin));
+        $persentase = $totalHariKerja > 0 ? round(($hadir / $totalHariKerja) * 100, 1) : 0;
 
         return [
-            'total' => $total,
+            'total' => $totalHariKerja,
             'hadir' => $hadir,
             'izin' => $izin,
             'alpha' => $alpha,

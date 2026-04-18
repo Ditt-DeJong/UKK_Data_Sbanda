@@ -7,6 +7,7 @@ use App\Models\DataOrangTua;
 use App\Models\DataSiswa;
 use App\Models\Izin;
 use App\Models\User;
+use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
@@ -301,40 +302,77 @@ class AdminController extends Controller
         }
     }
 
-    // Kehadiran Siswa
+    // Kehadiran Siswa (Board View)
     public function kehadiran(Request $request)
     {
         $tanggal = $request->query('tanggal', Carbon::today()->toDateString());
         $status = $request->query('status', '');
         $search = $request->query('search', '');
 
-        $query = \App\Models\Kehadiran::with('siswa')
-            ->whereDate('tanggal', $tanggal);
+        // 1. Ambil SEMUA Siswa yang sudah approved (Source of Truth)
+        $siswaQuery = DataSiswa::with('orangTua')
+            ->where('status_approval', 'approved')
+            ->orderBy('nama_siswa', 'asc');
 
-        if ($status) {
-            $query->where('status', strtoupper($status));
-        }
-
-        $kehadiran = $query->get();
-
-        // Filter by search if provided (search by student name/nik)
         if ($search) {
-            $kehadiran = $kehadiran->filter(function ($row) use ($search) {
-                $nama = strtolower($row->siswa->nama_siswa ?? '');
-                $nik = strtolower($row->siswa->nik_siswa ?? '');
-
-                return str_contains($nama, strtolower($search)) || str_contains($nik, strtolower($search));
-            })->values();
+            $siswaQuery->where(function($q) use ($search) {
+                $q->where('nama_siswa', 'like', "%$search%")
+                  ->orWhere('nik_siswa', 'like', "%$search%");
+            });
         }
 
-        $totalSiswa = DataSiswa::where('status_approval', 'approved')->count();
+        $listSiswa = $siswaQuery->get();
 
-        // Count based on full day data (without status filter)
-        $allKehadiran = \App\Models\Kehadiran::whereDate('tanggal', $tanggal)->get();
-        $countHadir = $allKehadiran->where('status', 'HADIR')->count();
-        $countIzin = $allKehadiran->where('status', 'IZIN')->count();
-        $countSakit = $allKehadiran->where('status', 'SAKIT')->count();
-        $countAlpha = $allKehadiran->where('status', 'ALPHA')->count();
+        // 2. Ambil data kehadiran untuk tanggal tersebut
+        $dataKehadiran = \App\Models\Kehadiran::whereDate('tanggal', $tanggal)
+            ->get()
+            ->keyBy('user_id');
+
+        // 3. Gabungkan data (Siswa + Kehadiran)
+        $kehadiran = $listSiswa->map(function ($siswa) use ($dataKehadiran) {
+            $record = $dataKehadiran->get($siswa->user_id);
+
+            // Build WA link ke orang tua jika status ALPHA
+            $nomorOrangTua = $siswa->orangTua->nomor_telepon ?? null;
+            $linkWaOrangTua = null;
+            if ($nomorOrangTua) {
+                $nomor = preg_replace('/[^0-9]/', '', $nomorOrangTua);
+                if (substr($nomor, 0, 1) === '0') {
+                    $nomor = '62' . substr($nomor, 1);
+                }
+                $pesan = urlencode(
+                    "Assalamualaikum Bapak/Ibu Orang Tua dari *{$siswa->nama_siswa}*,\n\n" .
+                    "Kami informasikan bahwa putra/putri Bapak/Ibu hari ini berstatus *ALPHA* (Tidak Hadir tanpa keterangan).\n\n" .
+                    "Mohon segera login ke Portal Orang Tua dan ajukan Izin atau Surat Sakit jika memang berhalangan hadir.\n\n" .
+                    "Terima kasih,\nAdmin Sbanda."
+                );
+                $linkWaOrangTua = "https://wa.me/{$nomor}?text={$pesan}";
+            }
+
+            return (object) [
+                'id'              => $record->id ?? null,
+                'user_id'         => $siswa->user_id,
+                'siswa'           => $siswa,
+                'status'          => $record->status ?? 'BELUM_DIABSEN',
+                'keterangan'      => $record->keterangan ?? '',
+                'waktu'           => $record ? Carbon::parse($record->created_at)->format('H:i') : null,
+                'link_wa_ortu'    => $linkWaOrangTua,
+            ];
+        });
+
+        // 4. Filter berdasarkan status jika ada
+        if ($status) {
+            $kehadiran = $kehadiran->filter(function($item) use ($status) {
+                return strtolower($item->status) === strtolower($status);
+            });
+        }
+
+        // Statistik Dashboard
+        $totalSiswa = $listSiswa->count();
+        $countHadir = $dataKehadiran->where('status', 'HADIR')->count();
+        $countIzin = $dataKehadiran->where('status', 'IZIN')->count();
+        $countSakit = $dataKehadiran->where('status', 'SAKIT')->count();
+        $countAlpha = $dataKehadiran->where('status', 'ALPHA')->count();
 
         $dataSiswaPending = DataSiswa::with(['user', 'orangTua'])
             ->where('status_approval', 'pending')
@@ -354,6 +392,66 @@ class AdminController extends Controller
             'dataSiswaPending',
             'notifCount'
         ));
+    }
+
+    // Update Kehadiran Manual (Update or Create)
+    public function updateKehadiran(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'tanggal' => 'required|date',
+            'status' => 'required|in:HADIR,IZIN,SAKIT,ALPHA',
+            'keterangan' => 'nullable|string|max:255',
+        ]);
+
+        $kehadiran = \App\Models\Kehadiran::updateOrCreate(
+            ['user_id' => $request->user_id, 'tanggal' => $request->tanggal],
+            ['status' => $request->status, 'keterangan' => $request->keterangan]
+        );
+
+        // Load relations for WA logic
+        $kehadiran->load('user.dataSiswa', 'user.dataOrangTua');
+
+        // Send WA jika guru manual menjatuhkan ALPHA
+        if ($request->status === 'ALPHA') {
+            $user = $kehadiran->user;
+            $orangTua = $user->dataOrangTua;
+
+            if ($orangTua && $orangTua->nomor_telepon) {
+                $namaSiswa = $user->dataSiswa->nama_siswa ?? 'Siswa SBANDA';
+                $tanggal = Carbon::parse($request->tanggal)->format('Y-m-d');
+                WhatsAppService::sendAlphaNotification($orangTua->nomor_telepon, $namaSiswa, $tanggal);
+            }
+        }
+
+        return redirect()->back()->with('success', 'Status kehadiran berhasil diperbarui!');
+    }
+
+    // Bulk Hadir (Tandai Berangkat Semua)
+    public function bulkHadir(Request $request)
+    {
+        $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
+        
+        $siswaApproved = DataSiswa::where('status_approval', 'approved')->get();
+
+        $count = 0;
+        foreach ($siswaApproved as $siswa) {
+            $exists = \App\Models\Kehadiran::where('user_id', $siswa->user_id)
+                ->whereDate('tanggal', $tanggal)
+                ->exists();
+
+            if (!$exists) {
+                \App\Models\Kehadiran::create([
+                    'user_id' => $siswa->user_id,
+                    'tanggal' => $tanggal,
+                    'status' => 'HADIR',
+                    'keterangan' => 'Tepat Waktu'
+                ]);
+                $count++;
+            }
+        }
+
+        return redirect()->back()->with('success', "$count siswa berhasil ditandai masuk.");
     }
 
     // Logout Admin

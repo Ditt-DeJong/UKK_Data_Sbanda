@@ -1,94 +1,77 @@
 @extends('layout.master')
 
-@section('title', 'Jadwal Kelas')
+@section('title', 'Jadwal Pelajaran Anak')
 
 @section('content')
-  <div class="container mx-auto px-4 py-8 min-h-screen">
+  <div class="w-full px-4 sm:px-8 xl:px-12 pb-16">
     
-    {{-- Header Section --}}
-    <div class="relative overflow-hidden card-futuristic p-6 mb-8 animate-fade-in">
-      <div class="absolute inset-0 bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-500 opacity-95 rounded-2xl"></div>
-      <div class="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-white/10 rounded-2xl"></div>
-      
-      {{-- Decorative --}}
-      <div class="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-      <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-cyan-300/20 rounded-full blur-2xl"></div>
-      
-      <div class="relative z-10 flex items-center justify-between">
-        <div>
-          <h4 class="font-bold text-white text-xl flex items-center gap-3">
-            <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-            </div>
-            Jadwal Pelajaran
-          </h4>
-          <p class="text-lg text-white/90 mt-2 ml-13">
-            Lihat jadwal pelajaran anak Anda disini
-          </p>
+    {{-- Main Header --}}
+    <div class="card-friendly mb-10 bg-gradient-to-r from-blue-600 to-indigo-600 border-none text-white overflow-hidden relative p-8 sm:p-12">
+        <div class="absolute -top-16 -left-16 w-64 h-64 bg-white/10 rounded-full blur-[40px]"></div>
+        <div class="relative z-10">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-2 tracking-tight">Jadwal Belajar Anak</h1>
+            <p class="text-base font-semibold text-blue-100 mb-0">Lihat jam mulai dan selesai setiap mata pelajaran di sekolah.</p>
         </div>
-        <div class="hidden md:block">
-          <div class="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-sm animate-float-slow">
-            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
-        </div>
-      </div>
     </div>
 
-    {{-- Coming Soon Content --}}
-    <div class="card-futuristic p-12 animate-slide-up" style="animation-delay: 0.1s">
-      <div class="text-center">
-        {{-- Animated Icon --}}
-        <div class="relative w-32 h-32 mx-auto mb-8">
-          <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-3xl animate-pulse-glow"></div>
-          <div class="absolute inset-1 bg-white rounded-3xl flex items-center justify-center">
-            <svg class="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-          </div>
-          {{-- Floating dots --}}
-          <div class="absolute -top-2 -right-2 w-4 h-4 bg-blue-400 rounded-full animate-float"></div>
-          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-cyan-400 rounded-full animate-float-slow"></div>
+    @if(isset($jadwal) && $jadwal->count() > 0)
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+        @php
+            $hariOrder = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        @endphp
+
+        @foreach($hariOrder as $h)
+        @php
+            $jadwalHari = $jadwal->get($h, collect());
+        @endphp
+        @if($jadwalHari->count() > 0)
+        <div class="card-friendly bg-white border-2 border-slate-100 p-0 overflow-hidden group hover:border-blue-200 hover:shadow-xl transition-all duration-500">
+            <div class="bg-blue-600 px-6 py-4 text-white">
+                <h3 class="text-xl font-bold tracking-tight uppercase">{{ $h }}</h3>
+            </div>
+            <div class="p-4 space-y-4">
+                @foreach($jadwalHari as $item)
+                <div class="p-5 rounded-3xl bg-slate-50 border-2 border-slate-100 group-hover:bg-white transition-colors">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-bold tracking-wide">
+                            {{ \Carbon\Carbon::parse($item->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($item->jam_selesai)->format('H:i') }}
+                        </span>
+                    </div>
+                    <h4 class="text-lg font-bold text-slate-900 mb-2 leading-tight">{{ $item->mata_pelajaran }}</h4>
+                    <div class="flex flex-col gap-1.5">
+                        <p class="text-sm text-slate-600 font-semibold flex items-center gap-2">
+                            <span class="w-6 h-6 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-user-tie text-[0.6rem]"></i>
+                            </span>
+                            {{ $item->guru }}
+                        </p>
+                        @if($item->ruangan)
+                        <p class="text-xs text-slate-500 font-semibold flex items-center gap-2">
+                            <span class="w-6 h-6 bg-slate-100 text-slate-500 rounded-full flex items-center justify-center">
+                                <i class="fa-solid fa-location-dot text-[0.6rem]"></i>
+                            </span>
+                            {{ $item->ruangan }}
+                        </p>
+                        @endif
+                    </div>
+                </div>
+                @endforeach
+            </div>
         </div>
-        
-        <h3 class="text-2xl font-bold text-gray-800 mb-3">Fitur Segera Hadir</h3>
-        <p class="text-gray-500 max-w-md mx-auto mb-8">
-          Jadwal pelajaran sedang dalam tahap pengembangan. Anda akan dapat melihat jadwal lengkap pelajaran anak Anda segera.
-        </p>
-        
-        {{-- Feature Preview Cards --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-100 hover-lift">
-            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-gray-700">Jadwal Harian</p>
-          </div>
-          
-          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-100 hover-lift">
-            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-gray-700">Info Guru</p>
-          </div>
-          
-          <div class="bg-gradient-to-br from-blue-50 to-cyan-50 p-4 rounded-xl border border-blue-100 hover-lift">
-            <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-3">
-              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-gray-700">Notifikasi</p>
-          </div>
-        </div>
-      </div>
+        @endif
+        @endforeach
     </div>
+    @else
+    <div class="card-friendly p-12 text-center border-2 border-dashed border-slate-300 bg-slate-50">
+        <div class="w-20 h-20 mb-6 bg-white rounded-full flex items-center justify-center mx-auto shadow-sm border-2 border-slate-200">
+            <i class="fa-solid fa-calendar-xmark text-3xl text-slate-300"></i>
+        </div>
+        <h2 class="text-xl font-bold text-slate-900 mb-3">Jadwal Belum Tersedia</h2>
+        <p class="text-base text-slate-600 font-semibold max-w-lg mx-auto leading-relaxed">
+            Bapak & Ibu yang terhormat, guru kelas masih dalam proses menyusun jadwal pelajaran. Mohon dicek kembali nanti ya!
+        </p>
+    </div>
+    @endif
+    
   </div>
 @endsection

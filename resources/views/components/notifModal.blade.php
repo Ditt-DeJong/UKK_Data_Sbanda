@@ -90,7 +90,7 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <form action="{{ route('admin.approve.siswa', $data->id) }}" method="POST">
+                        <form action="{{ route('admin.approve.siswa', $data->id) }}" method="POST" class="form-confirm" data-confirm-title="Setujui Data Siswa" data-confirm-message="Apakah Anda yakin ingin menyetujui siswa ini untuk tergabung dalam sistem?" data-confirm-danger="false">
                             @csrf
                             <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
                                 <i class="fa-solid fa-check"></i> Setujui

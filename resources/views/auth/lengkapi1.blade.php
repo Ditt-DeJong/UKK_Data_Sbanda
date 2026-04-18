@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -10,10 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Lengkapi Data Siswa - Data Sbanda</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <style>
-      body { font-family: 'Poppins', sans-serif; }
-      h1, h2, h3, h4, .btn-futuristic { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="min-h-screen bg-gradient-animated relative">
     
@@ -172,8 +168,8 @@
                                 name="jenis_kelamin"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="laki-laki">👦 Laki-laki</option>
-                                <option value="perempuan">👧 Perempuan</option>
+                                <option value="laki-laki">Laki-laki</option>
+                                <option value="perempuan">Perempuan</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,12 +195,12 @@
                                 name="agama"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="islam">☪️ Islam</option>
-                                <option value="kristen">✝️ Kristen</option>
-                                <option value="katolik">⛪ Katolik</option>
-                                <option value="hindu">🕉️ Hindu</option>
-                                <option value="buddha">☸️ Buddha</option>
-                                <option value="konghucu">☯️ Konghucu</option>
+                                <option value="islam">Islam</option>
+                                <option value="kristen">Kristen</option>
+                                <option value="katolik">Katolik</option>
+                                <option value="hindu">Hindu</option>
+                                <option value="buddha">Buddha</option>
+                                <option value="konghucu">Konghucu</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -230,7 +226,7 @@
                                 name="kelas"
                                 class="input-futuristic w-full appearance-none cursor-pointer pr-12"
                                 required>
-                                <option value="6">📚 Kelas 6</option>
+                                <option value="6">Kelas 6</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

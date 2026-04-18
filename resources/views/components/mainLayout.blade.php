@@ -17,11 +17,6 @@
     <!-- Tailwind -->
     @vite('resources/css/app.css')
     
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-        h1, h2, h3, h4, h5, h6, .btn-futuristic, .card-futuristic h3 { font-family: 'Outfit', sans-serif; }
-    </style>
-    
     @stack('styles')
 </head>
 
@@ -47,36 +42,7 @@
             :notifCount="$notifCount ?? 3" 
         />
 
-        <!-- FLASH MESSAGES -->
-        @if(session('success'))
-        <div id="flashSuccess" class="mx-6 mt-4 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-xl flex items-center gap-3 animate-slide-up">
-            <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <i class="fa-solid fa-check-circle text-emerald-600 text-lg"></i>
-            </div>
-            <div class="flex-1">
-                <p class="font-semibold">Berhasil!</p>
-                <p class="text-sm">{{ session('success') }}</p>
-            </div>
-            <button onclick="document.getElementById('flashSuccess').remove()" class="text-emerald-400 hover:text-emerald-600 transition">
-                <i class="fa-solid fa-times"></i>
-            </button>
-        </div>
-        @endif
-
-        @if(session('error'))
-        <div id="flashError" class="mx-6 mt-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center gap-3 animate-slide-up">
-            <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <i class="fa-solid fa-exclamation-circle text-red-600 text-lg"></i>
-            </div>
-            <div class="flex-1">
-                <p class="font-semibold">Error!</p>
-                <p class="text-sm">{{ session('error') }}</p>
-            </div>
-            <button onclick="document.getElementById('flashError').remove()" class="text-red-400 hover:text-red-600 transition">
-                <i class="fa-solid fa-times"></i>
-            </button>
-        </div>
-        @endif
+        {{-- Flash messages are handled by SweetAlert2 below --}}
 
         <!-- PAGE CONTENT with animation -->
         <div class="animate-fade-in">
@@ -88,7 +54,10 @@
 
 @stack('scripts')
 
-<!-- Global Modal Scripts -->
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Global Scripts -->
 <script>
     var overlay = document.getElementById("overlay");
 
@@ -110,6 +79,95 @@
 
     // Close modal when clicking overlay
     overlay?.addEventListener("click", closeAllModals);
+
+    // Global Interactive Confirm Forms using SweetAlert2
+    document.addEventListener("DOMContentLoaded", function() {
+        const confirmForms = document.querySelectorAll(".form-confirm");
+        confirmForms.forEach(form => {
+            form.addEventListener("submit", function(e) {
+                e.preventDefault();
+                const message = this.getAttribute("data-confirm-message") || "Apakah Anda yakin ingin melanjutkan?";
+                const title = this.getAttribute("data-confirm-title") || "Konfirmasi";
+                const isDanger = this.getAttribute("data-confirm-danger") === "true";
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: isDanger ? 'warning' : 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: isDanger ? '#ef4444' : '#10b981',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, Lanjutkan!',
+                    cancelButtonText: 'Batal',
+                    customClass: {
+                        popup: 'rounded-3xl shadow-2xl pb-6',
+                        title: 'font-bold text-gray-800 pt-4',
+                        confirmButton: 'rounded-xl px-6 py-3 font-bold shadow-lg',
+                        cancelButton: 'rounded-xl px-6 py-3 font-bold'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // =============================================
+        // SweetAlert2 Flash Notifications dari Session
+        // =============================================
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: '<span style="font-size:1.1rem;font-weight:800;color:#1e293b">Berhasil!</span>',
+                html: '<p style="color:#475569;font-size:0.95rem">{{ addslashes(session('success')) }}</p>',
+                showConfirmButton: false,
+                timer: 2800,
+                timerProgressBar: true,
+                position: 'top-end',
+                toast: true,
+                background: '#f0fdf4',
+                customClass: {
+                    popup: 'rounded-2xl shadow-xl border border-emerald-100',
+                    timerProgressBar: 'bg-emerald-500'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: '<span style="font-size:1.1rem;font-weight:800;color:#1e293b">Terjadi Kesalahan!</span>',
+                html: '<p style="color:#475569;font-size:0.95rem">{{ addslashes(session('error')) }}</p>',
+                showConfirmButton: true,
+                confirmButtonText: 'Tutup',
+                confirmButtonColor: '#ef4444',
+                position: 'center',
+                background: '#fff1f2',
+                customClass: {
+                    popup: 'rounded-3xl shadow-2xl border border-red-100 pb-6',
+                    title: 'font-bold',
+                    confirmButton: 'rounded-xl px-8 py-3 font-bold'
+                }
+            });
+        @endif
+
+        @if(session('sweet_success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ addslashes(session('sweet_success')) }}',
+                showConfirmButton: false,
+                timer: 2000,
+                toast: true,
+                position: 'top-end',
+                customClass: { popup: 'rounded-2xl shadow-xl' }
+            });
+        @endif
+    });
 </script>
 
 </body>

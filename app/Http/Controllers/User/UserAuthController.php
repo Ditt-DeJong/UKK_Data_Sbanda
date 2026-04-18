@@ -155,7 +155,13 @@ class UserAuthController extends Controller
     // Logout
     public function logout(Request $request)
     {
-        Auth::logout();
+        if (Auth::guard('admin')->check()) {
+            Auth::guard('admin')->logout();
+        }
+        if (Auth::guard('web')->check()) {
+            Auth::guard('web')->logout();
+        }
+        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

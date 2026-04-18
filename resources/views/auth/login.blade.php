@@ -1,167 +1,158 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="id">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    @vite('resources/css/app.css')
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <title>Login - Data Sbanda</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Aplikasi - Data SBANDA</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    @vite(['resources/js/app.js', 'resources/js/toggle.js'])
-    <style>
-      body { font-family: 'Poppins', sans-serif; }
-      h1, h2, h3, h4, .text-gradient, .btn-futuristic { font-family: 'Outfit', sans-serif; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    @vite('resources/css/app.css')
 </head>
-<body class="min-h-screen flex items-center justify-center bg-gradient-animated overflow-hidden relative">
-    
-    {{-- Decorative Background Elements --}}
-    <div class="fixed inset-0 pointer-events-none overflow-hidden">
-        <div class="orb orb-cyan w-96 h-96 -top-48 -left-48 opacity-30"></div>
-        <div class="orb orb-blue w-80 h-80 top-1/4 -right-40 opacity-20"></div>
-        <div class="orb orb-cyan w-64 h-64 bottom-20 left-1/4 opacity-25"></div>
-        {{-- Animated grid pattern --}}
-        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+
+<body class="flex min-h-screen bg-[#f0f7ff] font-['Nunito'] text-slate-800 antialiased overflow-hidden">
+
+    {{-- Left Side (Image & Branding) - Hidden on Mobile --}}
+    <div id="branding-panel"
+        class="hidden lg:flex lg:w-1/2 relative flex-col justify-center px-12 py-10 bg-blue-900 border-r border-blue-800/30 overflow-hidden transition-all duration-500">
+        {{-- Background Image --}}
+        <div class="absolute inset-0 z-0">
+            <img src="{{ asset('images/siswa.jpeg') }}" alt="Background" class="w-full h-full object-cover" />
+            <div id="spotlight-overlay" class="absolute inset-0 bg-blue-900/95 mix-blend-multiply transition-all duration-100 ease-out pointer-events-none" style="--posX: 50%; --posY: 50%; -webkit-mask-image: radial-gradient(circle 350px at var(--posX) var(--posY), transparent 0%, rgba(0,0,0,0.4) 40%, black 80%); mask-image: radial-gradient(circle 350px at var(--posX) var(--posY), transparent 0%, rgba(0,0,0,0.4) 40%, black 80%);"></div>
+        </div>
+
+        {{-- Content over image --}}
+        <div class="relative z-10 text-white mt-auto mb-auto pointer-events-none">
+            <div
+                class="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30 mb-8 shadow-lg pointer-events-auto">
+                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </div>
+
+            <p class="text-blue-200 font-bold tracking-widest text-sm mb-2 uppercase">Selamat Datang di Sistem Kami</p>
+            <h1 class="text-4xl lg:text-5xl font-black mb-6 leading-tight drop-shadow-md">Data SBANDA <br><span
+                    class="text-blue-300">Portal Orang Tua</span></h1>
+
+            <p class="text-lg text-blue-100/90 leading-relaxed max-w-md drop-shadow">
+                Sistem informasi dan pemantauan absensi terintegrasi untuk memudahkan orang tua dalam memantau kegiatan
+                akademik anak di sekolah.
+            </p>
+        </div>
+
+        <div class="relative z-10 text-blue-200/80 text-sm mt-auto font-medium pointer-events-none">
+            &copy; {{ date('Y') }} Data Sbanda. All rights reserved.
+        </div>
     </div>
 
-    {{-- Main Card --}}
-    <div class="w-full max-w-5xl mx-4 glass-card rounded-3xl shadow-2xl grid grid-cols-1 md:grid-cols-2 overflow-hidden animate-scale-in relative z-10">
-        
-        {{-- Bagian Kiri: Form Login --}}
-        <div class="p-8 lg:p-12 flex flex-col justify-center bg-white/95 backdrop-blur-xl">
-            {{-- Logo --}}
-            <div class="flex items-center gap-3 mb-8 animate-fade-in">
-                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg glow-blue-sm">
-                    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z"/>
-                    </svg>
+    {{-- Right Side (Form) --}}
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative overflow-hidden bg-[#f8fafc]">
+
+        {{-- Decorative Blob on Right Side (Subtle) --}}
+        <div
+            class="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-indigo-100 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] -z-10 opacity-60 blur-[60px] pointer-events-none">
+        </div>
+        <div
+            class="absolute bottom-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-blue-100/60 rounded-[60%_40%_30%_70%/60%_30%_70%_40%] -z-10 opacity-60 blur-[40px] pointer-events-none">
+        </div>
+
+        <div class="w-full max-w-md relative z-10">
+            
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-white border-2 border-blue-100 text-blue-700 flex items-center justify-center mx-auto mb-4 shadow-md">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
                 </div>
-                <span class="text-xl font-bold text-gradient">Data Sbanda</span>
+                <h1 class="text-3xl font-black text-slate-900 mb-1 tracking-wide">Selamat Datang</h1>
+                <p class="text-lg text-slate-700 font-bold">Silakan isi kolom di bawah untuk login</p>
             </div>
 
-            {{-- Welcome Text --}}
-            <div class="mb-8 animate-fade-in" style="animation-delay: 0.1s">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">
-                    Selamat Datang! 👋
-                </h2>
-                <p class="text-gray-500">Masuk ke akun Anda untuk melanjutkan</p>
-            </div>
+            <div class="bg-white rounded-[1.5rem] shadow-[0_10px_25px_rgba(37,99,235,0.05)] border-2 border-indigo-100 p-8 relative z-10">
+                <form action="{{ route('login') }}" method="POST" class="space-y-5">
+                    @csrf
+                    
+                    <div>
+                        <label class="block text-lg font-bold text-slate-900 mb-2 px-1">Alamat Email Ibu / Bapak</label>
+                        <input type="email" name="email" class="w-full bg-slate-50 border-2 border-slate-300 rounded-full px-5 py-3.5 text-base font-bold text-slate-900 transition-all duration-200 focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/15 placeholder:text-slate-500 placeholder:font-semibold" placeholder="Contoh: agus@gmail.com" required>
+                        @error('email')
+                            <div class="mt-2 px-4 py-2 bg-red-50 border border-red-200 rounded-xl text-red-700 font-bold text-base flex items-center gap-2">
+                                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between items-center mb-2 px-1">
+                            <label class="block text-lg font-bold text-slate-900">Kata Sandi (Password)</label>
+                            <a href="#" class="text-sm font-black text-blue-600 hover:text-blue-800 transition-colors">Lupa password?</a>
+                        </div>
+                        <div class="relative">
+                            <input type="password" name="password" id="password" class="w-full bg-slate-50 border-2 border-slate-300 rounded-full px-5 py-3.5 text-base font-bold text-slate-900 transition-all duration-200 focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/15 placeholder:text-slate-500 placeholder:font-semibold pr-12" placeholder="Ketik kata sandi..." required>
+                            <button type="button" onclick="const p=document.getElementById('password'); p.type = p.type === 'password' ? 'text' : 'password';" class="absolute inset-y-0 right-1.5 flex items-center justify-center p-2 text-slate-500 hover:text-blue-700 transition-colors focus:outline-none bg-slate-100 rounded-full h-9 w-9 my-auto">
+                                <svg class="w-5 h-5 block" id="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                            </button>
+                        </div>
+                    </div>
 
-            <form action="{{ route('login') }}" method="POST" class="space-y-6">
-                @csrf
-                
-                {{-- Email --}}
-                <div class="animate-fade-in" style="animation-delay: 0.15s">
-                    <label for="email" class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                        </svg>
-                        Email
-                    </label>
-                    <input type="email" name="email" id="email" placeholder="contoh@gmail.com"
-                           class="input-futuristic w-full">
-                </div>
-                
-                {{-- Password --}}
-                <div class="animate-fade-in" style="animation-delay: 0.2s">
-                    <label for="password" class="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                        </svg>
-                        Password
-                    </label>
-                    <div class="relative">
-                        <input type="password" name="password" id="password" placeholder="••••••••"
-                               class="input-futuristic w-full pr-12">
-                        <button type="button" id="togglePassword" class="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-blue-500 transition-colors">
-                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3l18 18m-2.121-4.879A9 9 0 0112 21a9 9 0 01-9-9 9 9 0 012.879-6.121M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
+                    <div class="pt-4">
+                        <button type="submit" class="flex w-full items-center justify-center bg-blue-600 text-white rounded-full p-4 text-lg font-extrabold shadow-[0_6px_15px_rgba(37,99,235,0.2)] transition-all duration-200 hover:bg-blue-700 hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(37,99,235,0.3)] border-none cursor-pointer text-center">
+                            Buka Aplikasi
                         </button>
                     </div>
+                </form>
+            </div>
 
-                    @error('email')
-                        <div class="flex items-center gap-2 text-red-500 mt-2 text-sm">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            {{ $message }}
-                        </div>
-                    @enderror
-
-                    <p class="text-gray-400 text-xs mt-3 flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        Harap ingat email dan password anda
-                    </p>
-                </div>
-
-                {{-- Tombol Login --}}
-                <div class="animate-fade-in" style="animation-delay: 0.25s">
-                    <button type="submit" class="btn-futuristic w-full py-4 text-lg flex items-center justify-center gap-3">
-                        <span>Masuk</span>
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                    </button>
-                </div>
-            </form>
-
-            {{-- Links --}}
-            <div class="mt-8 space-y-4 animate-fade-in" style="animation-delay: 0.3s">
-                <p class="text-center text-gray-600">
-                    Belum memiliki akun? 
-                    <a href="{{ route('register') }}" class="font-semibold text-blue-500 hover:text-blue-600 transition-colors">Daftar Sekarang</a>
-                </p>
-                <p class="text-center text-xs text-gray-400">
-                    Dengan masuk, Anda menyetujui 
-                    <a href="#" class="text-blue-500 hover:underline">Kebijakan Privasi</a> & 
-                    <a href="#" class="text-blue-500 hover:underline">Syarat Penggunaan</a>
+            <div class="text-center mt-6">
+                <p class="text-base font-bold text-slate-700">
+                    Belum memiliki akses?
+                    <a href="{{ route('register') }}"
+                        class="inline-block mt-2 text-blue-700 hover:text-blue-900 bg-blue-50 px-5 py-2 rounded-full hover:bg-blue-100 font-bold transition-colors text-base ml-2">Daftar Akun Baru</a>
                 </p>
             </div>
-        </div>
 
-        {{-- Bagian Kanan: Ilustrasi --}}
-        <div class="hidden md:flex flex-col justify-center items-center text-white p-12 relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500">
-            {{-- Pattern overlay --}}
-            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 1px 1px, white 1px, transparent 0); background-size: 30px 30px;"></div>
-            
-            {{-- Decorative circles --}}
-            <div class="absolute -top-20 -right-20 w-64 h-64 bg-white/10 rounded-full blur-2xl"></div>
-            <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-cyan-300/20 rounded-full blur-2xl"></div>
-            
-            <div class="relative z-10 text-center">
-                <div class="w-24 h-24 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-8 backdrop-blur-sm animate-float">
-                    <svg class="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 3L1 9L5 11.18V17.18L12 21L19 17.18V11.18L21 10.09V17H23V9L12 3ZM18.82 9L12 12.72L5.18 9L12 5.28L18.82 9ZM17 15.99L12 18.72L7 15.99V12.27L12 15L17 12.27V15.99Z"/>
-                    </svg>
-                </div>
-                
-                <h2 class="text-3xl font-bold mb-4 text-glow-white">Portal Orang Tua</h2>
-                <p class="text-white/90 italic text-lg max-w-xs mx-auto leading-relaxed">
-                    "Bantu perkembangan anak anda secara optimal dengan memantau keaktifan anak!!"
-                </p>
-                
-                {{-- Stats --}}
-                <div class="mt-10 grid grid-cols-2 gap-6">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-                        <p class="text-3xl font-bold">500+</p>
-                        <p class="text-white/70 text-sm">Orang Tua</p>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-                        <p class="text-3xl font-bold">100%</p>
-                        <p class="text-white/70 text-sm">Transparan</p>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const panel = document.getElementById('branding-panel');
+            const overlay = document.getElementById('spotlight-overlay');
+
+            if (panel && overlay) {
+                // Throttle mousemove with requestAnimationFrame for smooth performance
+                let isTicking = false;
+                
+                panel.addEventListener('mousemove', (e) => {
+                    if (!isTicking) {
+                        window.requestAnimationFrame(() => {
+                            const rect = panel.getBoundingClientRect();
+                            const x = e.clientX - rect.left;
+                            const y = e.clientY - rect.top;
+                            
+                            // Set variable for mask position
+                            overlay.style.setProperty('--posX', `${x}px`);
+                            overlay.style.setProperty('--posY', `${y}px`);
+                            
+                            isTicking = false;
+                        });
+                        isTicking = true;
+                    }
+                });
+
+                panel.addEventListener('mouseleave', () => {
+                    // Reset to center slowly when left
+                    overlay.style.transition = 'all 0.5s ease';
+                    overlay.style.setProperty('--posX', `50%`);
+                    overlay.style.setProperty('--posY', `50%`);
+                    
+                    setTimeout(() => {
+                        overlay.style.transition = 'all 0.1s ease-out';
+                    }, 500);
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>

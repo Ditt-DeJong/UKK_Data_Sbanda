@@ -1,210 +1,271 @@
 <x-mainLayout 
-    title="Kehadiran Siswa" 
+    title="Papan Kehadiran Siswa" 
     :active="'kehadiran'"
-    pageTitle="Kehadiran Siswa"
-    pageSubtitle="Kelola absensi dan rekap kehadiran siswa"
+    pageTitle="Papan Kehadiran Siswa"
+    pageSubtitle="Kelola absensi harian seluruh siswa secara manual"
     :notifCount="$notifCount">
 
-<!-- Notification Modal Component -->
 <x-notifModal :dataSiswaPending="$dataSiswaPending" />
 
 <!-- STATISTIK CARDS -->
-<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-    <!-- Hadir -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.1s">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-check-circle text-white text-2xl"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Hadir</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500">{{ $countHadir }}</h3>
-            </div>
-        </div>
+<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div class="card-futuristic p-6 hover-lift animate-slide-up bg-white" style="animation-delay: 0.1s">
+        <p class="text-sm font-bold text-gray-500 mb-1 uppercase tracking-wider">Total Siswa</p>
+        <h3 class="text-3xl font-black text-blue-600">{{ $totalSiswa }}</h3>
     </div>
-
-    <!-- Izin -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.15s">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-file-lines text-white text-2xl"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Izin</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">{{ $countIzin }}</h3>
-            </div>
-        </div>
+    <div class="card-futuristic p-6 hover-lift animate-slide-up bg-emerald-50 border-emerald-100" style="animation-delay: 0.15s">
+        <p class="text-sm font-bold text-emerald-600 mb-1 uppercase tracking-wider">Hadir</p>
+        <h3 class="text-3xl font-black text-emerald-700">{{ $countHadir }}</h3>
     </div>
-
-    <!-- Sakit -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.2s">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-500 rounded-2xl flex items-center justify-center shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-notes-medical text-white text-2xl"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Sakit</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-500">{{ $countSakit }}</h3>
-            </div>
-        </div>
+    <div class="card-futuristic p-6 hover-lift animate-slide-up bg-amber-50 border-amber-100" style="animation-delay: 0.2s">
+        <p class="text-sm font-bold text-amber-600 mb-1 uppercase tracking-wider">Izin/Sakit</p>
+        <h3 class="text-3xl font-black text-amber-700">{{ $countIzin + $countSakit }}</h3>
     </div>
-
-    <!-- Alpha -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.25s">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-gray-500 to-slate-600 rounded-2xl flex items-center justify-center shadow-lg shadow-gray-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-circle-xmark text-white text-2xl"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Alpha</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-600 to-slate-500">{{ $countAlpha }}</h3>
-            </div>
-        </div>
+    <div class="card-futuristic p-6 hover-lift animate-slide-up bg-rose-50 border-rose-100" style="animation-delay: 0.25s">
+        <p class="text-sm font-bold text-rose-600 mb-1 uppercase tracking-wider">Alpha</p>
+        <h3 class="text-3xl font-black text-rose-700">{{ $countAlpha }}</h3>
+    </div>
+    <div class="card-futuristic p-6 hover-lift animate-slide-up bg-gray-50 border-gray-200" style="animation-delay: 0.3s">
+        <p class="text-sm font-bold text-gray-400 mb-1 uppercase tracking-wider">Belum Absen</p>
+        <h3 class="text-3xl font-black text-gray-500">{{ $totalSiswa - ($countHadir + $countIzin + $countSakit + $countAlpha) }}</h3>
     </div>
 </section>
 
-<!-- FILTER & TABLE SECTION -->
+<!-- FILTER & BOARD SECTION -->
 <section class="px-6 pb-10">
-    <div class="card-futuristic overflow-hidden animate-slide-up" style="animation-delay: 0.3s">
-
-        <!-- Header dengan Filter -->
-        <div class="p-6 border-b border-gray-200/60">
-            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4 mb-6">
+    <div class="card-futuristic overflow-hidden animate-slide-up shadow-xl shadow-blue-900/5" style="animation-delay: 0.4s">
+        
+        <div class="p-8 border-b border-gray-100">
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-6">
                 <div>
-                    <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-                        <div class="w-2 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full"></div>
-                        Daftar Kehadiran
+                    <h3 class="text-2xl font-black text-gray-800 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-blue-600 rounded-full"></span>
+                        Status Absensi Hari Ini
                     </h3>
-                    <p class="text-sm text-gray-500 ml-4">{{ \Carbon\Carbon::parse($tanggal)->translatedFormat('l, d F Y') }}</p>
+                    <p class="text-gray-500 font-bold mt-1">{{ \Carbon\Carbon::parse($tanggal)->translatedFormat('l, d F Y') }}</p>
+                </div>
+                
+                <div class="flex flex-wrap gap-3">
+                    <form action="{{ route('admin.kehadiransiswa.bulk') }}" method="POST" class="form-confirm" data-confirm-title="Tandai Hadir Semua" data-confirm-message="Tandai semua siswa yang belum absen sebagai HADIR?" data-confirm-danger="false">
+                        @csrf
+                        <input type="hidden" name="tanggal" value="{{ $tanggal }}">
+                        <button type="submit" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-emerald-600/20 transition-all hover:-translate-y-1">
+                            <i class="fa-solid fa-check-double text-lg"></i>
+                            Tandai Hadir Semua
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <!-- Filter Section (Server-side via GET) -->
-            <form method="GET" action="{{ route('admin.kehadiransiswa') }}" id="filterForm">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="mt-8">
+                <form method="GET" action="{{ route('admin.kehadiransiswa') }}" id="filterForm" class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-6 rounded-3xl border border-gray-100">
                     <div>
-                        <label class="text-sm font-semibold text-gray-700 mb-2 block">Tanggal</label>
-                        <input type="date" name="tanggal" value="{{ $tanggal }}" class="input-futuristic w-full" onchange="document.getElementById('filterForm').submit();">
+                        <label class="text-xs font-black text-gray-400 uppercase mb-2 block tracking-widest">Pilih Tanggal</label>
+                        <input type="date" name="tanggal" value="{{ $tanggal }}" class="input-friendly py-3 px-5 text-sm" onchange="this.form.submit()">
                     </div>
-
                     <div>
-                        <label class="text-sm font-semibold text-gray-700 mb-2 block">Status</label>
-                        <div class="relative">
-                            <select name="status" class="input-futuristic w-full appearance-none pr-12" onchange="document.getElementById('filterForm').submit();">
-                                <option value="" {{ $status == '' ? 'selected' : '' }}>Semua Status</option>
-                                <option value="hadir" {{ $status == 'hadir' ? 'selected' : '' }}>✅ Hadir</option>
-                                <option value="izin" {{ $status == 'izin' ? 'selected' : '' }}>📋 Izin</option>
-                                <option value="sakit" {{ $status == 'sakit' ? 'selected' : '' }}>🏥 Sakit</option>
-                                <option value="alpha" {{ $status == 'alpha' ? 'selected' : '' }}>❌ Alpha</option>
-                            </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
-                                <i class="fa-solid fa-chevron-down"></i>
-                            </div>
-                        </div>
+                        <label class="text-xs font-black text-gray-400 uppercase mb-2 block tracking-widest">Filter Status</label>
+                        <select name="status" class="input-friendly py-3 px-5 text-sm appearance-none" onchange="this.form.submit()">
+                            <option value="">Semua Siswa</option>
+                            <option value="HADIR" {{ request('status') == 'HADIR' ? 'selected' : '' }}>Hadir</option>
+                            <option value="IZIN" {{ request('status') == 'IZIN' ? 'selected' : '' }}>Izin/Sakit</option>
+                            <option value="ALPHA" {{ request('status') == 'ALPHA' ? 'selected' : '' }}>Alpha</option>
+                            <option value="BELUM_DIABSEN" {{ request('status') == 'BELUM_DIABSEN' ? 'selected' : '' }}>Belum Diabsen</option>
+                        </select>
                     </div>
-
                     <div>
-                        <label class="text-sm font-semibold text-gray-700 mb-2 block">Cari Siswa</label>
-                        <div class="relative">
-                            <input type="text" name="search" value="{{ $search }}" placeholder="Nama atau NIS..." class="input-futuristic w-full pl-12">
-                            <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-                                <i class="fa-solid fa-search"></i>
-                            </div>
-                        </div>
+                        <label class="text-xs font-black text-gray-400 uppercase mb-2 block tracking-widest">Cari Siswa</label>
+                        <input type="text" name="search" value="{{ $search }}" placeholder="Nama siswa..." class="input-friendly py-3 px-5 text-sm">
                     </div>
-
                     <div class="flex items-end gap-2">
-                        <button type="submit" class="btn-futuristic py-3 px-6 flex items-center gap-2">
-                            <i class="fa-solid fa-filter"></i> Filter
-                        </button>
-                        <a href="{{ route('admin.kehadiransiswa') }}" class="px-4 py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-medium transition-all duration-200 flex items-center gap-2">
-                            <i class="fa-solid fa-rotate-left"></i> Reset
-                        </a>
+                        <button type="submit" class="flex-1 bg-blue-600 text-white py-3 rounded-full font-bold hover:bg-blue-700 transition-colors">Cari</button>
+                        <a href="{{ route('admin.kehadiransiswa') }}" class="w-12 h-12 flex items-center justify-center bg-white border-2 border-gray-200 text-gray-400 rounded-full hover:bg-gray-50 transition-colors"><i class="fa-solid fa-rotate-left"></i></a>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
 
-        <!-- Table Kehadiran -->
         <div class="overflow-x-auto">
             <table class="w-full">
-                <thead class="bg-gradient-to-r from-gray-50 to-gray-100/80">
-                    <tr>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">No</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">NIS</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Nama Siswa</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Kelas</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Waktu Absen</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Keterangan</th>
+                <thead>
+                    <tr class="bg-gray-50/50">
+                        <th class="px-8 py-5 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Siswa</th>
+                        <th class="px-8 py-5 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Status Saat Ini</th>
+                        <th class="px-8 py-5 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Aksi Cepat</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-100">
-                    @forelse ($kehadiran as $index => $row)
-                    <tr class="hover:bg-blue-50/50 transition-colors duration-200 group">
-                        <td class="px-6 py-4 font-medium text-gray-600">{{ $loop->iteration }}</td>
-                        <td class="px-6 py-4">
-                            <span class="font-mono text-sm bg-gray-100 px-2 py-1 rounded">{{ $row->siswa->nik_siswa ?? '-' }}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center font-bold text-white shadow-md group-hover:scale-105 transition-transform">
-                                    {{ strtoupper(substr($row->siswa->nama_siswa ?? 'U', 0, 1)) }}
+                <tbody class="divide-y divide-gray-50">
+                    @forelse ($kehadiran as $row)
+                    <tr class="hover:bg-blue-50/30 transition-colors duration-200">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-blue-500/20">
+                                    {{ strtoupper(substr($row->siswa->nama_siswa, 0, 1)) }}
                                 </div>
-                                <span class="font-semibold text-gray-800">{{ $row->siswa->nama_siswa ?? 'Siswa Tidak Ditemukan' }}</span>
+                                <div>
+                                    <p class="font-black text-gray-800 leading-none">{{ $row->siswa->nama_siswa }}</p>
+                                    <p class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-tighter">Kelas {{ $row->siswa->kelas }} • NIS {{ $row->siswa->nik_siswa }}</p>
+                                </div>
                             </div>
                         </td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium">
-                                {{ $row->siswa->kelas ?? '-' }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($row->created_at)
-                            <span class="text-gray-700 font-medium">{{ \Carbon\Carbon::parse($row->created_at)->format('H:i') }} WIB</span>
+                        <td class="px-8 py-6">
+                            @if($row->status == 'HADIR')
+                                <span class="bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> MASUK ({{ $row->waktu }})
+                                </span>
+                            @elseif($row->status == 'IZIN')
+                                <span class="bg-amber-100 text-amber-700 px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-amber-500 rounded-full"></span> IZIN
+                                </span>
+                            @elseif($row->status == 'SAKIT')
+                                <span class="bg-rose-100 text-rose-700 px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-rose-500 rounded-full"></span> SAKIT
+                                </span>
+                            @elseif($row->status == 'ALPHA')
+                                <div class="flex flex-col gap-1.5">
+                                    <span class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-2 shadow-lg shadow-red-600/20">
+                                        <i class="fa-solid fa-circle-xmark"></i> ALPHA
+                                    </span>
+                                    @if($row->link_wa_ortu)
+                                    <a href="{{ $row->link_wa_ortu }}" target="_blank"
+                                       class="inline-flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-lg text-xs font-black transition-all shadow-sm">
+                                        <i class="fa-brands fa-whatsapp"></i> Beri Tahu Ortu
+                                    </a>
+                                    @endif
+                                </div>
                             @else
-                            <span class="text-gray-400">-</span>
+                                <span class="bg-gray-100 text-gray-400 px-4 py-2 rounded-xl text-xs font-black inline-flex items-center gap-2 italic">
+                                    <span class="w-2 h-2 bg-gray-300 rounded-full"></span> Belum Dicatat
+                                </span>
                             @endif
                         </td>
-                        <td class="px-6 py-4">
-                            @if(strtolower($row->status) == 'hadir')
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">
-                                <span class="w-2 h-2 bg-emerald-500 rounded-full"></span> Hadir
-                            </span>
-                            @elseif(strtolower($row->status) == 'izin')
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">
-                                <span class="w-2 h-2 bg-amber-500 rounded-full"></span> Izin
-                            </span>
-                            @elseif(strtolower($row->status) == 'sakit')
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">
-                                <span class="w-2 h-2 bg-red-500 rounded-full"></span> Sakit
-                            </span>
-                            @else
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-200 text-gray-600">
-                                <span class="w-2 h-2 bg-gray-400 rounded-full"></span> Alpha
-                            </span>
-                            @endif
+                        <td class="px-8 py-6">
+                            <div class="flex items-center gap-2">
+                                @if($row->status == 'BELUM_DIABSEN')
+                                    <button onclick="setPresence('{{ $row->user_id }}', 'HADIR')" class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-all flex items-center justify-center font-black" title="Hadir"><i class="fa-solid fa-check"></i></button>
+                                    <button onclick="setPresence('{{ $row->user_id }}', 'IZIN')" class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 hover:bg-amber-600 hover:text-white transition-all flex items-center justify-center font-black" title="Izin"><i class="fa-solid fa-envelope"></i></button>
+                                    <button onclick="setPresence('{{ $row->user_id }}', 'SAKIT')" class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 hover:bg-rose-600 hover:text-white transition-all flex items-center justify-center font-black" title="Sakit"><i class="fa-solid fa-medkit"></i></button>
+                                    <button onclick="setPresence('{{ $row->user_id }}', 'ALPHA')" class="w-10 h-10 rounded-xl bg-gray-100 text-gray-600 hover:bg-red-600 hover:text-white transition-all flex items-center justify-center font-black" title="Alpha"><i class="fa-solid fa-xmark"></i></button>
+                                @else
+                                    <button onclick='openEditModal({!! json_encode($row) !!})' class="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-black hover:bg-blue-600 hover:text-white transition-all">
+                                        <i class="fa-solid fa-pen-to-square mr-1"></i> Ubah Status
+                                    </button>
+                                @endif
+                            </div>
                         </td>
-                        <td class="px-6 py-4 text-gray-600 max-w-xs truncate">{{ $row->keterangan ?? '-' }}</td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="px-6 py-12 text-center text-gray-400">
-                            <i class="fa-solid fa-calendar-xmark text-4xl mb-3 block opacity-50"></i>
-                            <p class="font-medium">Tidak ada data kehadiran untuk tanggal ini</p>
+                        <td colspan="3" class="px-8 py-20 text-center text-gray-400">
+                            <i class="fa-solid fa-users-slash text-5xl mb-4 block opacity-20"></i>
+                            <p class="font-black text-xl">Siswa Tidak Ditemukan</p>
+                            <p class="text-sm">Coba ubah kata kunci pencarian atau filter.</p>
                         </td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
-
-        <!-- Footer Info -->
-        <div class="p-6 border-t border-gray-200/60 bg-gray-50/50">
-            <p class="text-sm text-gray-600">Menampilkan {{ $kehadiran->count() }} data kehadiran dari {{ $totalSiswa }} siswa terdaftar</p>
-        </div>
-
     </div>
 </section>
 
+<!-- HIDDEN FORM FOR QUICK ACTIONS -->
+<form id="quickAbsentForm" action="{{ route('admin.kehadiransiswa.update') }}" method="POST" class="hidden">
+    @csrf
+    @method('PUT')
+    <input type="hidden" name="user_id" id="quickUserId">
+    <input type="hidden" name="tanggal" value="{{ $tanggal }}">
+    <input type="hidden" name="status" id="quickStatus">
+    <input type="hidden" name="keterangan" value="Absensi Manual melalui Papan Board">
+</form>
+
+@push('modals')
+<!-- Modal Edit/Update Kehadiran -->
+<div id="editKehadiranModal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-blue-900/60 backdrop-blur-md" onclick="closeEditModal()"></div>
+    <div class="relative bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden animate-scale-in">
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-2xl font-black">Edit Absensi</h3>
+                    <p class="text-blue-100 font-bold" id="editLabelSiswa">Nama Siswa</p>
+                </div>
+                <button onclick="closeEditModal()" class="w-10 h-10 flex items-center justify-center rounded-2xl bg-white/20 hover:bg-white/30 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <form action="{{ route('admin.kehadiransiswa.update') }}" method="POST" class="p-8 space-y-6">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="user_id" id="editUserId">
+            <input type="hidden" name="tanggal" value="{{ $tanggal }}">
+            
+            <div>
+                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Status Kehadiran</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="relative cursor-pointer group">
+                        <input type="radio" name="status" value="HADIR" class="peer hidden">
+                        <div class="px-4 py-3 border-2 border-gray-100 rounded-2xl text-center font-black text-sm text-gray-400 peer-checked:border-emerald-500 peer-checked:bg-emerald-50 peer-checked:text-emerald-600 group-hover:bg-gray-50 transition-all">HADIR</div>
+                    </label>
+                    <label class="relative cursor-pointer group">
+                        <input type="radio" name="status" value="IZIN" class="peer hidden">
+                        <div class="px-4 py-3 border-2 border-gray-100 rounded-2xl text-center font-black text-sm text-gray-400 peer-checked:border-amber-500 peer-checked:bg-amber-50 peer-checked:text-amber-600 group-hover:bg-gray-50 transition-all">IZIN</div>
+                    </label>
+                    <label class="relative cursor-pointer group">
+                        <input type="radio" name="status" value="SAKIT" class="peer hidden">
+                        <div class="px-4 py-3 border-2 border-gray-100 rounded-2xl text-center font-black text-sm text-gray-400 peer-checked:border-rose-500 peer-checked:bg-rose-50 peer-checked:text-rose-600 group-hover:bg-gray-50 transition-all">SAKIT</div>
+                    </label>
+                    <label class="relative cursor-pointer group">
+                        <input type="radio" name="status" value="ALPHA" class="peer hidden">
+                        <div class="px-4 py-3 border-2 border-gray-100 rounded-2xl text-center font-black text-sm text-gray-400 peer-checked:border-red-600 peer-checked:bg-red-50 peer-checked:text-red-700 group-hover:bg-gray-50 transition-all">ALPHA</div>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Keterangan Tambahan</label>
+                <textarea name="keterangan" id="editKeterangan" rows="3" class="input-friendly w-full resize-none text-sm" placeholder="Catatan tambahan (opsional)..."></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-3xl shadow-xl shadow-blue-500/30 transition-all hover:scale-[1.02] active:scale-95">
+                Simpan Status
+            </button>
+        </form>
+    </div>
+</div>
+@endpush
+
+@push('scripts')
+<script>
+    function setPresence(userId, status) {
+        document.getElementById('quickUserId').value = userId;
+        document.getElementById('quickStatus').value = status;
+        document.getElementById('quickAbsentForm').submit();
+    }
+
+    function openEditModal(row) {
+        document.getElementById('editUserId').value = row.user_id;
+        document.getElementById('editLabelSiswa').innerText = row.siswa.nama_siswa;
+        document.getElementById('editKeterangan').value = row.keterangan || '';
+        
+        // Check corresponding radio button
+        const radios = document.getElementsByName('status');
+        for (let radio of radios) {
+            if (radio.value === row.status) {
+                radio.checked = true;
+            }
+        }
+
+        document.getElementById('editKehadiranModal').classList.remove('hidden');
+    }
+
+    function closeEditModal() {
+        document.getElementById('editKehadiranModal').classList.add('hidden');
+    }
+</script>
+@endpush
+
 </x-mainLayout>
+

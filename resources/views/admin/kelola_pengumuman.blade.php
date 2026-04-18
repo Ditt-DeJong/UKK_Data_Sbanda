@@ -87,7 +87,7 @@
                                 <button onclick="openEditModal({{ json_encode($item) }})" class="w-8 h-8 flex items-center justify-center rounded-lg bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
-                                <form action="{{ route('admin.pengumuman.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus pengumuman ini?');">
+                                <form action="{{ route('admin.pengumuman.destroy', $item->id) }}" method="POST" class="form-confirm" data-confirm-title="Hapus Pengumuman" data-confirm-message="Pengumuman ini akan dihapus secara permanen. Lanjutkan?" data-confirm-danger="true">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all">

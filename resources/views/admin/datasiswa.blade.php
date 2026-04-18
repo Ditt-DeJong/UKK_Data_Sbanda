@@ -96,9 +96,9 @@
             <div class="relative w-full lg:w-48">
                 <select class="input-futuristic w-full appearance-none pr-12 cursor-pointer" id="filterStatus">
                     <option value="">Semua Status</option>
-                    <option value="Aktif">✅ Aktif</option>
-                    <option value="Nonaktif">❌ Nonaktif</option>
-                    <option value="Pending">⏳ Pending</option>
+                    <option value="Aktif">Aktif</option>
+                    <option value="Nonaktif">Nonaktif</option>
+                    <option value="Pending">Pending</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
                     <i class="fa-solid fa-chevron-down"></i>
@@ -181,7 +181,7 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
 
-                                <form action="{{ route('admin.datasiswa.delete', $s->id) }}" method="POST" onsubmit="return confirm('Hapus siswa?')" class="inline">
+                                <form action="{{ route('admin.datasiswa.delete', $s->id) }}" method="POST" class="inline form-confirm" data-confirm-title="Hapus Data Siswa" data-confirm-message="Data siswa ini akan dihapus secara permanen dan tidak dapat dikembalikan!" data-confirm-danger="true">
                                     @csrf
                                     @method('DELETE')
                                     <button class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-100 text-red-600 hover:bg-red-600 hover:text-white transition-all duration-200" title="Hapus">
@@ -227,8 +227,8 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin</label>
                     <select id="jenis_kelamin" name="jenis_kelamin" class="input-futuristic w-full appearance-none" required>
-                        <option value="Laki-laki">👦 Laki-laki</option>
-                        <option value="Perempuan">👧 Perempuan</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
                     </select>
                 </div>
 
@@ -245,9 +245,9 @@
                 <div>
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Status</label>
                     <select id="status" name="status" class="input-futuristic w-full appearance-none">
-                        <option value="aktif">✅ Aktif</option>
-                        <option value="pending">⏳ Pending</option>
-                        <option value="nonaktif">❌ Nonaktif</option>
+                        <option value="aktif">Aktif</option>
+                        <option value="pending">Pending</option>
+                        <option value="nonaktif">Nonaktif</option>
                     </select>
                 </div>
 

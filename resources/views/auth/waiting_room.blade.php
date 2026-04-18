@@ -10,10 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Menunggu Verifikasi Admin - Data Sbanda</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <style>
-      body { font-family: 'Poppins', sans-serif; }
-      h1, h2, h3, h4, .btn-futuristic { font-family: 'Outfit', sans-serif; }
-    </style>
 </head>
 <body class="min-h-screen bg-gradient-animated relative flex flex-col justify-center items-center">
     

@@ -9,55 +9,53 @@
 <x-notifModal :dataSiswaPending="$dataSiswaPending" />
 
 <!-- STATISTIK -->
-<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<section class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
     <!-- Total Siswa -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.1s">
+    <div class="card-futuristic p-6 animate-slide-up" style="animation-delay: 0.1s">
         <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-users text-white text-2xl"></i>
+            <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-users text-blue-600 text-xl"></i>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Total Siswa Terdaftar</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">{{ $totalSiswa }}</h3>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total Siswa</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ $totalSiswa }}</h3>
             </div>
         </div>
         <div class="mt-4 flex items-center gap-2 text-sm">
-            <span class="flex items-center gap-1 text-amber-600 bg-amber-100 px-2 py-0.5 rounded-full">
+            <span class="inline-flex items-center gap-1 text-amber-600 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-md text-xs font-semibold">
                 <i class="fa-solid fa-clock text-xs"></i> {{ $dataPending }} pending
             </span>
-            <span class="text-gray-400">menunggu verifikasi</span>
+            <span class="text-slate-400 text-xs">menunggu verifikasi</span>
         </div>
     </div>
 
     <!-- Izin Pending -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.15s">
+    <div class="card-futuristic p-6 animate-slide-up" style="animation-delay: 0.15s">
         <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform duration-300 animate-pulse-glow">
-                <i class="fa-solid fa-file-circle-exclamation text-white text-2xl"></i>
+            <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-file-circle-exclamation text-amber-500 text-xl"></i>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Izin Pending</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">{{ $izins->where('status', 'pending')->count() }}</h3>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Izin Pending</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ $izins->where('status', 'pending')->count() }}</h3>
             </div>
         </div>
-        <div class="mt-4 flex items-center gap-2 text-sm">
-            <span class="text-amber-600">Perlu persetujuan segera</span>
-        </div>
+        <div class="mt-4 text-xs text-slate-400">Perlu persetujuan segera</div>
     </div>
 
     <!-- Data Terverifikasi -->
-    <div class="card-futuristic p-6 hover-lift animate-slide-up group" style="animation-delay: 0.2s">
+    <div class="card-futuristic p-6 animate-slide-up" style="animation-delay: 0.2s">
         <div class="flex items-center gap-4">
-            <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform duration-300">
-                <i class="fa-solid fa-circle-check text-white text-2xl"></i>
+            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
+                <i class="fa-solid fa-circle-check text-emerald-500 text-xl"></i>
             </div>
             <div>
-                <p class="text-sm font-medium text-gray-500 mb-1">Data Terverifikasi</p>
-                <h3 class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-emerald-500">{{ $dataVerified }}</h3>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Terverifikasi</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ $dataVerified }}</h3>
             </div>
         </div>
-        <div class="mt-4 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-            <div class="h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full" style="width: {{ $totalSiswa > 0 ? round(($dataVerified / $totalSiswa) * 100) : 0 }}%"></div>
+        <div class="mt-4 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+            <div class="h-full bg-emerald-500 rounded-full transition-all duration-700" style="width: {{ $totalSiswa > 0 ? round(($dataVerified / $totalSiswa) * 100) : 0 }}%"></div>
         </div>
     </div>
 </section>
